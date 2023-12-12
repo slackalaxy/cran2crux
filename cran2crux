@@ -1,0 +1,48 @@
+#!/bin/bash
+#
+# cran2crux: automatically create ports for R (v4) modules
+#
+# Petar Petrov, slackalaxy at gmail dot com
+
+DIRNAM=$(basename $PWD)
+
+if [[ "$1" = "" ]] || [[ "$1" = "-h" ]] || [[ "$1" = "--help" ]]; then
+	echo "usage: $(basename $0) module [options] <dependencies depth>"
+	echo "options:"
+	echo "  -r,   --recursive        create ports for the dependencies, recursively"
+	echo "  -ro,  --recursive-opt    create ports for the optional dependencies, too"
+	echo "dependencies depth:"
+	echo "  an integer                  normally you won't need to specify anything here"
+	echo "                              if the amount of dependencies is too large, you"
+	echo "                              may wish to increase this (default is 5)"
+	exit 0
+fi
+
+if [[ ! -z "$2" ]] && [[ "$2" != "-r" ]] && [[ "$2" != "-ro" ]] && [[ "$2" != "--recursive" ]] && [[ "$2" != "--recursive-opt" ]]; then
+	echo "invalid option $2, use $(basename $0) -h for help"
+	exit 1
+fi
+
+if [[ ! -z "$3" ]] && [[ ! $3 -gt 0 ]]; then
+	echo "specify a positive integer, use $(basename $0) -h for help"
+	exit 1
+fi
+
+if [ ! -w "$PWD" ]; then
+	echo "Folder '$DIRNAM' is not writable."
+	exit 1
+fi
+
+#R_SCRIPT_PATH="/usr/lib/cpan2crux/"
+R_SCRIPT_PATH="/home/petrov/Desktop/cran2crux"
+
+module="$1"
+option="$2"
+depth="$3"
+
+# use 5 as default depth value
+if [[ -z "$3" ]]; then
+	depth="5"
+fi
+
+Rscript $R_SCRIPT_PATH/cran2pkgfile.R "$module" "$option" "$depth"
