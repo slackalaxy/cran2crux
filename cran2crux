@@ -1,48 +1,74 @@
 #!/bin/bash
 #
-# cran2crux: automatically create ports for R (v4) modules
+# cran2crux: Write CRUX ports for CRAN R modules
 #
 # Petar Petrov, slackalaxy at gmail dot com
 
+# path to R script
+R_SCRIPT_PATH="/usr/lib/cran2crux/"
+
 DIRNAM=$(basename $PWD)
 
-if [[ "$1" = "" ]] || [[ "$1" = "-h" ]] || [[ "$1" = "--help" ]]; then
+# exit if no module specified
+if [[ "$1" = "" ]]; then
+	echo "=======> ERROR: 'module' not specified"
+	exit 1
+fi
+
+help_menu(){
 	echo "usage: $(basename $0) module [options] <dependencies depth>"
 	echo "options:"
-	echo "  -r,   --recursive        create ports for the dependencies, recursively"
-	echo "  -ro,  --recursive-opt    create ports for the optional dependencies, too"
+	echo "  -r,   --recursive        create ports for dependencies, recursively"
+	echo "  -ro,  --recursive-opt    create ports for optional dependencies, too"
+	echo "  -h,   --help             print help and exit"
 	echo "dependencies depth:"
-	echo "  an integer                  normally you won't need to specify anything here"
-	echo "                              if the amount of dependencies is too large, you"
-	echo "                              may wish to increase this (default is 5)"
+	echo "   integer > 0             set higher (>10) if dependencies list is large"
+}
+
+# print help
+if [[ "$1" = "-h" ]] || [[ "$1" = "--help" ]]; then
+	help_menu
 	exit 0
 fi
 
+if [[ "$2" = "-h" ]] || [[ "$2" = "--help" ]]; then
+	help_menu
+	exit 0
+fi
+
+# module name starts with a dash
+if [ "${1:0:1}" = "-" ]; then
+	echo "$(basename $0): invalid module name $1"
+	exit 1
+fi
+
+# option is invalid
 if [[ ! -z "$2" ]] && [[ "$2" != "-r" ]] && [[ "$2" != "-ro" ]] && [[ "$2" != "--recursive" ]] && [[ "$2" != "--recursive-opt" ]]; then
-	echo "invalid option $2, use $(basename $0) -h for help"
+	echo "$(basename $0): invalid option $2"
 	exit 1
 fi
 
+# dependencies depth is invalid
 if [[ ! -z "$3" ]] && [[ ! $3 -gt 0 ]]; then
-	echo "specify a positive integer, use $(basename $0) -h for help"
+	echo "$(basename $0): invalid integer $3"
 	exit 1
 fi
 
+# no permissions to write in dir
 if [ ! -w "$PWD" ]; then
 	echo "Folder '$DIRNAM' is not writable."
 	exit 1
 fi
 
-#R_SCRIPT_PATH="/usr/lib/cpan2crux/"
-R_SCRIPT_PATH="/home/petrov/Desktop/cran2crux"
-
+# what command line arguments mean
 module="$1"
 option="$2"
 depth="$3"
 
-# use 5 as default depth value
+# if no dependencies depth is specified, use "5" as default depth value
 if [[ -z "$3" ]]; then
 	depth="5"
 fi
 
+# run the R script
 Rscript $R_SCRIPT_PATH/cran2pkgfile.R "$module" "$option" "$depth"
