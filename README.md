@@ -4,7 +4,7 @@ Write CRUX ports for CRAN R modules
 ## Description
 The `cran2crux` script automatically generates ready to use port(s) for R
 modules available from [CRAN](https://cran.r-project.org/). The script
-creates ports in the current directory. The name of each port is `r4-module``
+creates ports in the current directory. The name of each port is `r4-module`
 (lowercase) and the release number is set to 1. If the port already exists,
 `cran2crux` will overwrite it, so it is advisable to run it in an empty directory.
 
