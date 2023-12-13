@@ -1,14 +1,23 @@
 #!/usr/bin/env Rscript
 
-# Load the available packages database
-#module <- "Seurat"
-options(repos = c(CRAN = "https://cloud.r-project.org"))
+# "THE BEER-WARE LICENSE" (Revision 42):
+# Petar Petrov <slackalaxy@gmail.com> wrote this file.  As long as you retain
+# this notice you can do whatever you want with this stuff. If we meet some
+# day, and you think this stuff is worth it, you can buy me a beer in return.
 
+# get cranrepo and maintainer information
+source("/etc/cran2crux.conf")
+
+# set cran repo
+options(repos = c(CRAN = cranrepo.url))
+
+# input arguments order
 args <- commandArgs(trailingOnly = TRUE)
 module <- args[1]
 cliopt <- args[2]
 depth <- args[3]
 
+# start by loading the available packages database
 pkgsdb <- available.packages()
 
 # is a package on CRAN?
@@ -23,7 +32,6 @@ on.cran <- function(x) {
 
 # stop already if input does not exist
 if (is.null(on.cran(module))) {
-  cat("Input is not on CRAN. Stopping... ")
   stop()
 }
 
@@ -93,7 +101,7 @@ depsofdeps <- function(modules = NULL, pkgsdb = NULL, opts = NULL){
 # This runs depsofdeps recursively with a number of iterations, deep resolving deps
 deepdeps <- function(package = NULL,
                      pkgs.db = NULL,
-                     iterations = 3,
+                     iterations = 5,
                      opts = NULL){
   
   # start with just the one
@@ -121,8 +129,7 @@ pkgfile.style <- function(x){
 # Write the Pkgfile
 pkgfile.write <- function(module = NULL){
   
-  # TODO: this should be set elsewhere
-  maintainer <- c("Petar Petrov, slackalaxy at gmail dot com")
+  maintainer <- maintainer.info
   
   # Preserve upper case, as well as original version format of the module
   modules.dep <- depends.on(module, pkgsdb)
