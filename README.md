@@ -6,7 +6,7 @@ The `cran2crux` script automatically generates ready to use port(s) for R
 modules available from [CRAN](https://cran.r-project.org/). The script
 creates ports in the current directory. The name of each port is `r4-module``
 (lowercase) and the release number is set to 1. If the port already exists,
-`cran2crux`` will overwrite it, so it is advisable to run it in an empty directory.
+`cran2crux` will overwrite it, so it is advisable to run it in an empty directory.
 
 ## Options
 `-r`, `--recursive`: Create port for module and create ports for its dependencies and their own dependencies, recursively.  
@@ -27,7 +27,7 @@ Call `cran2crux`` in a newly created, empty directory:
 
 Let's create a port for the [Seurat](https://cran.r-project.org/web/packages/Seurat/) set of tools for single cell genomics, by [Satija lab](https://satijalab.org/seurat/):
 
-    cran2crux Module
+    cran2crux Seurat
 
 This will create a port for Seurat and its dependencies recursively:
 
@@ -37,4 +37,6 @@ This will create a port for Seurat, its dependencies and optional
 dependencies, recursively. This may require more intensive dependencies
 searches, therefore we increase the depth value to 15:
 
-	cran2crux Module -ro 15
+	cran2crux Seurat -ro 15
+
+An example of cran2crux generated repository of modules ports can be found [here](https://github.com/slackalaxy/crux-ports/r4-modules).
