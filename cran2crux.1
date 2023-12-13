@@ -1,0 +1,77 @@
+.\" 
+.\" cran2crux manual page.
+.\" (C) 2023 by Petar Petrov <slackalaxy@gmail.com> 
+.\"
+.TH cran2crux 1
+.SH NAME
+cran2crux \- Write CRUX ports for CRAN R modules
+.SH SYNOPSIS
+.PP
+.B cran2crux
+.SH DESCRIPTION
+
+The \fIcran2crux\fP script automatically generates ready to use port(s) for R
+modules available from CRAN (\fhttps://cran.r-project.org/\fP). The script
+creates ports in the current directory. The name of each port is "r4-module"
+(lowercase) and the release number is set to 1. If the port already exists,
+cran2crux will overwrite it, so it is advisable to run it in an empty directory.
+
+.SH OPTIONS
+.TP
+.B "\-r, \-\-recursive"
+Create port for module and create ports for its dependencies and their own
+dependencies, recursively.
+.TP
+.B "\-ro, \-\-recursive\-opt"
+Create port for module and create ports for its dependencies, as well as,
+optional dependencies, recursively. This may require to set <dependencies
+depth> to a higher number (see below).
+.TP
+.B "\-h, \-\-help"
+Display help.
+.TP
+.B "<dependencies depth>"
+A positive integer after the option. This defines how many iterations of
+recursive searches for dependencies cran2crux will perform. Set higher to
+a higher value (>10) if dependencies list is large.
+
+.SH CONFIG
+You can configure \fI/etc/cran2crux.conf\fP to set a maintainer line and
+a CRAN mirror. R syntax is used (!), therefore settings go like this:
+
+.PP
+.nf
+	maintainer.info <- c("Petar Petrov, slackalaxy at gmail dot com")
+	cranrepo.url <- "https://cloud.r-project.org"
+
+
+.SH EXAMPLES
+.fi
+.PP
+
+Call \fIcran2crux\fP in a newly created, empty directory:
+.PP
+.nf
+	mkdir r4-modules
+	cd r4-modules 
+	
+This will create a port for a module:
+
+	cran2crux Module
+	
+This will create a port for the Module and dependencies recursively:
+
+	cran2crux Module -r
+	
+This will create a port for the Module, its dependencies and optional 
+dependencies, recursively. This may require more intensive dependencies
+searches, therefore we increase the depth value to 15:
+
+	cran2crux Module -ro 15
+
+.fi
+.PP
+
+.SH AUTHOR
+
+\fIcran2crux\fP was written by Petar Petrov <slackalaxy@gmail.com> for CRUX.
