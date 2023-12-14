@@ -179,6 +179,7 @@ pkgfile.write <- function(module = NULL){
   #return(pkgfile)
 }
 
+# write the ports
 if (cliopt == "-r" | cliopt == "--recursive") {
   modules.all <- deepdeps(module, pkgsdb, depth, opts = FALSE)
   for (d in modules.all){
