@@ -61,8 +61,11 @@ Parsing `-ro` will do as above, including what's *optional*. We set the `depth` 
 
 	cran2crux Seurat -ro 15
 
-## A ready R modules ports repository
-An example of a `cran2crux` generated repository can be found [here](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
+## Installation
+A port is available at [ppetrov/cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/cran2crux).
+
+## R modules ports repository
+An example of a `cran2crux` generated repository can be found at [r4-modules](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
 
 ## TODO
 Extend `cran2crux` to work with [BioConductor](https://bioconductor.org/), as well.
