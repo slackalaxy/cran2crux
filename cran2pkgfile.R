@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
 # "THE BEER-WARE LICENSE" (Revision 42):
-# Petar Petrov <slackalaxy@gmail.com> wrote this file.  As long as you retain
+# Petar Petrov <slackalaxy@gmail.com> wrote this file. As long as you retain
 # this notice you can do whatever you want with this stuff. If we meet some
 # day, and you think this stuff is worth it, you can buy me a beer in return.
 
@@ -45,17 +45,20 @@ cran.available <- function(x){
   return(y)
 }
 
-# remove anything with or within brackets
+# prepare deps
 names.only <- function(x){
   x <- gsub("[\r\n]", " ", x)
   x <- strsplit(x, ", ")
 
+  # remove within brackets
   y <- c()
   for (i in x[[1]]) {
     j <- gsub("\\s*\\([^\\)]+\\)","",as.character(i))
     y <- c(y, j)
   }
   
+  # in case deps are just comma-separated (depa,depb)
+  y <- strsplit(y, ",")
   return(y)
 }
 
@@ -99,6 +102,7 @@ depsofdeps <- function(modules = NULL, pkgsdb = NULL, opts = NULL){
 }
 
 # This runs depsofdeps recursively with a number of iterations, deep resolving deps
+# TODO: make this more intelligent to stop automatically when all deps are resolved.
 deepdeps <- function(package = NULL,
                      pkgs.db = NULL,
                      iterations = 5,
