@@ -12,10 +12,11 @@ creates its output in the current directory. Running `cran2crux Module` will pro
 
 ## Configuration
 You can configure `/etc/cran2crux.conf` to set a maintainer line and a CRAN mirror. The `R` syntax is used, therefore settings look like this:
+```R
+maintainer.info <- c("Petar Petrov, slackalaxy at gmail dot com")
+cranrepo.url <- "https://cloud.r-project.org"
 
-    maintainer.info <- c("Petar Petrov, slackalaxy at gmail dot com")
-    cranrepo.url <- "https://cloud.r-project.org"
-
+```
 ## Listing dependencies
 `cran2crux` aims to add dependencies information (available from CRAN) to the port automatically, as follows:
 * `# Depends on:` `r` itself, followed by R packages, listed in the **Depends**, **Imports**, and **LinkingTo** fields.
@@ -34,7 +35,7 @@ As an example, let's create a port for the [Seurat](https://cran.r-project.org/w
     cran2crux Seurat
 
 Here's the port:
-```
+```BASH
 # Description: R module Seurat
 # URL: https://cran.r-project.org/web/packages/Seurat
 # Maintainer: Petar Petrov, slackalaxy at gmail dot com
