@@ -5,7 +5,7 @@
 # Written by Petar Petrov, slackalaxy at gmail dot com
 
 # path to R script
-R_SCRIPT_PATH="/usr/lib/crux2cran"
+R_SCRIPT_PATH="/usr/lib/cran2crux"
 
 DIRNAM=$(basename $PWD)
 
