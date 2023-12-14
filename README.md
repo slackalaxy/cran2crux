@@ -26,10 +26,10 @@ Some are inbuild in R, such as `methods` from **Depends**, while others from the
 
 ## Example usage
 Create a new empty directory to call `cran2crux` there:
-
-    mkdir r4-modules
-    cd r4-modules 
-
+```BASH
+mkdir r4-modules
+cd r4-modules 
+```
 As an example, let's create a port for the [Seurat](https://cran.r-project.org/web/packages/Seurat/) set of tools for single cell genomics ([Satija lab](https://satijalab.org/seurat/)). The following will create a single port, called `r4-seurat`:
 
     cran2crux Seurat
@@ -61,8 +61,8 @@ Parsing `-ro` will do as above, including what's *optional*. We set the `depth` 
 
 	cran2crux Seurat -ro 15
 
-## A ready R modules repository
-An example of a `cran2crux` generated repository can be found [here](https://github.com/slackalaxy/crux-ports/r4-modules).
+## An R modules ports repository
+An example of a `cran2crux` generated repository can be found [here](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
 
 ## Links
 * [R project](https://www.r-project.org/)
