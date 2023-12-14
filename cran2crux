@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# cran2crux: Write CRUX ports for CRAN R modules
+# cran2crux: Write CRUX ports for R modules from CRAN
 #
-# Petar Petrov, slackalaxy at gmail dot com
+# Written by Petar Petrov, slackalaxy at gmail dot com
 
 # path to R script
-R_SCRIPT_PATH="/usr/lib/cran2crux/"
+R_SCRIPT_PATH="/usr/lib/crux2cran"
 
 DIRNAM=$(basename $PWD)
 
