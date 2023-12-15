@@ -1,13 +1,12 @@
 # cran2crux: write CRUX ports for R modules from CRAN
 
 ## Description
-The `cran2crux` script automatically generates port(s) for R modules available from [CRAN](https://cran.r-project.org/). The script
-creates its output in the current directory: running `cran2crux Module` will produce a port named `r4-module` with release number set to 1. If the port already exists, `cran2crux` will overwrite it (!), so it is advisable to run it in an empty directory.
+The `cran2crux` script automatically generates [CRUX](https://crux.nu/) port(s) for R modules available from [CRAN](https://cran.r-project.org/). Running `cran2crux Module` will produce a port named `r4-module` with release number set to 1. The script creates its output in the current directory. If the port already exists, `cran2crux` will overwrite it (!), so it is advisable to run it in an empty directory.
 
-A port is available at [ppetrov/cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/cran2crux). An example of a `cran2crux` generated repository can be found at [r4-modules](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
+A [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/cran2crux) port is available. An example of a `cran2crux` generated repository can be found at [r4-modules](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
 
 ## Configuration
-You should modify `/etc/cran2crux.conf` to set a maintainer line and a [CRAN mirror](https://cran.r-project.org/mirrors.html). The `R` syntax is used, therefore settings look like this:
+You should modify `/etc/cran2crux.conf` to fill in the maintainer line and select a [CRAN mirror](https://cran.r-project.org/mirrors.html). The `R` syntax is used, therefore settings look like this:
 ```R
 maintainer.info <- c("Petar Petrov, slackalaxy at gmail dot com")
 cranrepo.url <- "https://cloud.r-project.org"
