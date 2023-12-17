@@ -1,12 +1,13 @@
 # cran2crux: write CRUX ports for R modules from CRAN
 
 ## Description
-The `cran2crux` script automatically generates [CRUX](https://crux.nu/) port(s) for R modules available from [CRAN](https://cran.r-project.org/). Running `cran2crux Module` will produce a port named `r4-module` with release number set to 1. The script creates its output in the current directory. If the port already exists, `cran2crux` will overwrite it (!), so it is advisable to run it in an empty directory.
+The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) for R modules available from [CRAN](https://cran.r-project.org/). The tool creates its output in the current directory; if the port already exists, cran2crux will overwrite it (!), so it is advisable to run it in an empty directory. Running `cran2crux Module` will produce a port named `r4-module`.
 
-A [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/cran2crux) port is available. An example of a `cran2crux` generated repository can be found at [r4-modules](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
+## Installation
+A port is available [here](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/cran2crux).
 
 ## Configuration
-You should modify `/etc/cran2crux.conf` to fill in the maintainer line and select a [CRAN mirror](https://cran.r-project.org/mirrors.html). The `R` syntax is used, therefore settings look like this:
+You should modify `/etc/cran2crux.conf` to fill in the maintainer line and select a [CRAN mirror](https://cran.r-project.org/mirrors.html). The `R`-language syntax is used, therefore settings look like this:
 ```R
 maintainer.info <- c("Petar Petrov, slackalaxy at gmail dot com")
 cranrepo.url <- "https://cloud.r-project.org"
@@ -60,6 +61,9 @@ Although the dependencies rows are automatically filled, the corresponding ports
 Parsing `-ro` will do as above, including what's *optional*. We set the `depth` value to 15, as this requires more searches:
 
 	cran2crux Seurat -ro 15
+
+## r4-modules repository
+I am currently building a repository of ports for CRAN modules. It is still a work in progress, but can be viewed [here](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
 
 ## TODO
 Extend `cran2crux` to work with [BioConductor](https://bioconductor.org/), as well.
