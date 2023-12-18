@@ -6,7 +6,10 @@ The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) fo
 Running `cran2crux Module` will produce a port named `r4-module`.
 
 ## Installation
-A port is available [here](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/cran2crux).
+A port is available [here](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/cran2crux), or just do:
+
+    httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/ppetrov/#cran2crux cran2crux
+
 
 ## Configuration
 You should modify `/etc/cran2crux.conf` to fill in the maintainer line and select a [CRAN mirror](https://cran.r-project.org/mirrors.html). The `R`-language syntax is used, therefore settings look like this:
