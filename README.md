@@ -5,6 +5,8 @@ The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) fo
 
 Running `cran2crux Module` will produce a port named `r4-module`.
 
+![img](./cran2crux.png)
+
 ## Installation
 A port is available [here](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/cran2crux), or just do:
 
