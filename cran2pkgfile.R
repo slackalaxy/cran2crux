@@ -149,13 +149,14 @@ pkgfile.style <- function(x){
 
 # try to get the url right
 get.url <- function(x){
-  bioc.cat <- c("/bioc", "/data/annotation", "/data/experiment", "/workflows", "/books")
-  for (b in bioc.cat) {
-    if (x == paste0(bioc.url, bioc.version, b, "/src/contrib")) {
-      module.url <- "https://bioconductor.org/packages/"
-    }else{
-      module.url <- "https://cran.r-project.org/web/packages/"
-    }
+  if (x == paste0(bioc.url, bioc.version, "/bioc/src/contrib") |
+      x == paste0(bioc.url, bioc.version, "/data/annotation/src/contrib") |
+      x == paste0(bioc.url, bioc.version, "/data/experiment/src/contrib") |
+      x == paste0(bioc.url, bioc.version, "/workflows/src/contrib") |
+      x == paste0(bioc.url, bioc.version, "/books/src/contrib")) {
+    module.url <- "https://bioconductor.org/packages/"
+  }else{
+    module.url <- "https://cran.r-project.org/web/packages/"
   }
   return(module.url)
 }
