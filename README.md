@@ -1,7 +1,7 @@
 # cran2crux: write CRUX ports for R modules from CRAN
 
 ## Description
-The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) for R modules available from [CRAN](https://cran.r-project.org/). The tool creates its output in the current directory; if the port already exists, cran2crux will overwrite it (!), so it is advisable to run it in an empty directory. 
+The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) for R modules available from [CRAN](https://cran.r-project.org/) and [BioConductor](https://bioconductor.org/). The tool creates its output in the current directory; if the port already exists, cran2crux will overwrite it (!), so it is advisable to run it in an empty directory. 
 
 Running `cran2crux Module` will produce a port named `r4-module`.
 
@@ -30,7 +30,7 @@ cran2crux adds dependencies information from CRAN to the port, as follows:
 * `# Depends on:` `r` itself, followed by R packages, listed in the **Depends**, **Imports**, and **LinkingTo** fields.
 * `# Optional:` R packages listed in the **Suggests** field.
 
-Some modules are already inbuild in R, such as `methods` from **Depends**, while others from the **Suggests** list may be available from elsewhere (e.g. [BioConductor](https://bioconductor.org/)). These cannot be retrieved from CRAN and are omitted from the port. Packages listed as **SystemRequirements** lie outside the R ecosystem and cran2crux is not meant to deal with them. It is up to the ports maintainer to find (by `finddeps`?) and add them to the port afterwards.
+Some modules are already inbuild in R, such as `methods` from **Depends**, while others listed as **SystemRequirements** lie outside the R ecosystem and cran2crux is not meant to deal with them. It is up to the ports maintainer to find (by `finddeps`?) and add them to the port afterwards.
 
 ## Example usage
 Create a new empty directory to call cran2crux there:
@@ -73,7 +73,7 @@ Parsing `-ro` will do as above, including what's *optional*. We set the `depth` 
 I am currently building a repository of ports for CRAN modules. It is still a work in progress, but can be viewed [here](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
 
 ## TODO
-Extend cran2crux to work with [BioConductor](https://bioconductor.org/), as well.
+Extend cran2crux to check for updates.
 
 ## Links
 * [R project](https://www.r-project.org/)
