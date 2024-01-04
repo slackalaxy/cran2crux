@@ -147,6 +147,19 @@ pkgfile.style <- function(x){
   return(y)
 }
 
+# try to get the url right
+get.url <- function(x){
+  bioc.cat <- c("/bioc", "/data/annotation", "/data/experiment", "/workflows", "/books")
+  for (b in bioc.cat) {
+    if (x == paste0(bioc.url, bioc.version, b, "/src/contrib")) {
+      module.url <- "https://bioconductor.org/packages/"
+    }else{
+      module.url <- "https://cran.r-project.org/web/packages/"
+    }
+  }
+  return(module.url)
+}
+
 # Write the Pkgfile
 pkgfile.write <- function(module = NULL){
   
@@ -159,7 +172,7 @@ pkgfile.write <- function(module = NULL){
   
   # polish for Pkgfile's fields
   pkgfile.dsc <- paste("R module", module)
-  pkgfile.url <- paste0(pkgsdb[module, "Repository"])
+  pkgfile.url <- paste0(get.url(pkgsdb[module, "Repository"]), module)
   pkgfile.mnt <- maintainer
   pkgfile.dep <- gsub(",", "", gsub("\\.", "-", toString(pkgfile.style(modules.dep))))
   pkgfile.opt <- gsub(",", "", gsub("\\.", "-", toString(pkgfile.style(modules.opt))))
