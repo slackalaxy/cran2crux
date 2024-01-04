@@ -159,7 +159,7 @@ pkgfile.write <- function(module = NULL){
   
   # polish for Pkgfile's fields
   pkgfile.dsc <- paste("R module", module)
-  pkgfile.url <- paste0(pkgsdb()[module, "Repository"])
+  pkgfile.url <- paste0(pkgsdb[module, "Repository"])
   pkgfile.mnt <- maintainer
   pkgfile.dep <- gsub(",", "", gsub("\\.", "-", toString(pkgfile.style(modules.dep))))
   pkgfile.opt <- gsub(",", "", gsub("\\.", "-", toString(pkgfile.style(modules.opt))))
@@ -171,7 +171,7 @@ pkgfile.write <- function(module = NULL){
   }
   
   pkgfile.rel <- "1"
-  pkgfile.src <- paste0(pkgsdb()[module, "Repository"], "/", module, "_", modules.ver, ".tar.gz")
+  pkgfile.src <- paste0(pkgsdb[module, "Repository"], "/", module, "_", modules.ver, ".tar.gz")
   
   pkgfile <- paste0("# Description: ", pkgfile.dsc, "\n",
                     "# URL: ", pkgfile.url, "\n",
