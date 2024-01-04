@@ -33,13 +33,15 @@ cliopt <- args[2]
 depth <- args[3]
 
 # start by loading the available packages database
-pkgsdb <- available.packages()
+#pkgsdb <- available.packages()
+#biocdb <- available.packages(repos = BiocManager::repositories())
+pkgsdb <- available.packages(repos = BiocManager::repositories())
 
-# is a package on CRAN?
+# is a package on CRAN or BioC?
 on.cran <- function(x) {
   result <- try(pkgsdb[x, "Package"], silent = T)
   if (inherits(result, 'try-error')) {
-    cat(x, "is not on CRAN. Skipping...", "\n")
+    cat(x, "is not on CRAN or BioC Skipping...", "\n")
     return(NULL)
   }
   return(result)
@@ -157,7 +159,7 @@ pkgfile.write <- function(module = NULL){
   
   # polish for Pkgfile's fields
   pkgfile.dsc <- paste("R module", module)
-  pkgfile.url <- paste0("https://cran.r-project.org/web/packages/", module)
+  pkgfile.url <- paste0(available.packages()[module, "Repository"])
   pkgfile.mnt <- maintainer
   pkgfile.dep <- gsub(",", "", gsub("\\.", "-", toString(pkgfile.style(modules.dep))))
   pkgfile.opt <- gsub(",", "", gsub("\\.", "-", toString(pkgfile.style(modules.opt))))
