@@ -26,7 +26,7 @@ help_menu(){
 	echo "  -r,   --recursive        create ports for dependencies, recursively"
 	echo "  -ro,  --recursive-opt    create ports for optional dependencies, too"
 	echo "  -so,  --show-old         check for updates of installed modules"
-	echo "  -u,   --update           generated updated ports for outdated modules"
+	echo "  -u,   --update           generate updated ports for outdated modules"
 	echo "  -h,   --help             print help and exit"
 	echo "dependencies depth:"
 	echo "   integer > 0             set higher (>10) if dependencies list is large"
