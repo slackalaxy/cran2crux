@@ -73,16 +73,18 @@ This will create a port for the Module and dependencies recursively:
 
 	cran2crux Module -r
 	
-This will create a port for the Module, its dependencies and optional 
+This will create a port for the Module, its dependencies and optional
 dependencies, recursively. This may require more intensive dependencies
 searches, therefore we increase the depth value to 15:
 
 	cran2crux Module -ro 15
 
-This will show potential updates of installed modules and then will generate
-updated ports:
+This will show potential updates of installed modules:
 
 	cran2crux -so
+	
+This will generate updated ports for outdated modules already installed:
+	
 	cran2crux -u
 
 .fi
