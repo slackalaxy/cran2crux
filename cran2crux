@@ -7,6 +7,11 @@
 # path to R script
 R_SCRIPT_PATH="/usr/lib/cran2crux"
 
+# what command line arguments mean
+module="$1"
+option="$2"
+depth="$3"
+
 DIRNAM=$(basename $PWD)
 
 # exit if no module specified
@@ -48,8 +53,11 @@ fi
 if [[ "$1" = "-u" ]] || [[ "$1" = "--update" ]]; then
 	new_array=$( Rscript $R_SCRIPT_PATH/old2new.R | sed '1d' | awk '{print $1}' | tr '\n' ' ' )
 	
+	option=""
+	depth=""
+	
 	for module in ${new_array[@]}; do
-		Rscript $R_SCRIPT_PATH/cran2pkgfile.R "$module"
+		Rscript $R_SCRIPT_PATH/cran2pkgfile.R "$module" "$option" "$depth"
 	done
 	exit 0
 fi
@@ -77,11 +85,6 @@ if [ ! -w "$PWD" ]; then
 	echo "Folder '$DIRNAM' is not writable."
 	exit 1
 fi
-
-# what command line arguments mean
-module="$1"
-option="$2"
-depth="$3"
 
 # if no dependencies depth is specified, use "5" as default depth value
 if [[ -z "$3" ]]; then
