@@ -49,6 +49,12 @@ if [[ "$1" = "-so" ]] || [[ "$1" = "--show-old" ]]; then
 	exit 0
 fi
 
+# no permissions to write in dir
+if [ ! -w "$PWD" ]; then
+	echo "Folder '$DIRNAM' is not writable."
+	exit 1
+fi
+
 # Generate updated ports for installed modules
 if [[ "$1" = "-u" ]] || [[ "$1" = "--update" ]]; then
 	new_array=$( Rscript $R_SCRIPT_PATH/old2new.R | sed '1d' | awk '{print $1}' | tr '\n' ' ' )
@@ -77,12 +83,6 @@ fi
 # dependencies depth is invalid
 if [[ ! -z "$3" ]] && [[ ! $3 -gt 0 ]]; then
 	echo "$(basename $0): invalid integer $3"
-	exit 1
-fi
-
-# no permissions to write in dir
-if [ ! -w "$PWD" ]; then
-	echo "Folder '$DIRNAM' is not writable."
 	exit 1
 fi
 
