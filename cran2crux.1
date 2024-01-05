@@ -11,10 +11,11 @@ cran2crux \- Write CRUX ports for CRAN R modules
 .SH DESCRIPTION
 
 The \fIcran2crux\fP script automatically generates ready to use port(s) for R
-modules available from CRAN (\fhttps://cran.r-project.org/\fP). The script
-creates ports in the current directory. The name of each port is "r4-module"
-(lowercase) and the release number is set to 1. If the port already exists,
-cran2crux will overwrite it, so it is advisable to run it in an empty directory.
+modules available from CRAN (\fhttps://cran.r-project.org/\fP) and BioConductor
+(\fhttps://bioconductor.org/\fP). The script creates ports in the current
+directory. The name of each port is "r4-module" (lowercase) and the release
+number is set to 1. If the port already exists, cran2crux will overwrite it,
+so it is advisable to run it in an empty directory.
 
 .SH OPTIONS
 .TP
@@ -27,6 +28,13 @@ Create port for module and create ports for its dependencies, as well as,
 optional dependencies, recursively. This may require to set <dependencies
 depth> to a higher number (see below).
 .TP
+.B "\-so, \-\-show\-old"
+Check for potential updates of modules that are already installed. This
+will report the versions as found at the modules repository, such as CRAN.
+.TP
+.B "\-u, \-\-update"
+Generate updated ports for installed modules that are reported to be outdated.
+.TP
 .B "\-h, \-\-help"
 Display help.
 .TP
@@ -36,14 +44,16 @@ recursive searches for dependencies cran2crux will perform. Set higher to
 a higher value (>10) if dependencies list is large.
 
 .SH CONFIG
-You can configure \fI/etc/cran2crux.conf\fP to set a maintainer line and
-a CRAN mirror. R syntax is used (!), therefore settings go like this:
+You can configure \fI/etc/cran2crux.conf\fP to set a maintainer line, a CRAN
+and BioConductor mirrors, as well as BioConductor version. R syntax is used
+(!), therefore settings go like this:
 
 .PP
 .nf
 	maintainer.info <- c("Petar Petrov, slackalaxy at gmail dot com")
 	cranrepo.url <- "https://cloud.r-project.org"
-
+	bioc.url <- "https://bioconductor.org/packages/"
+	bioc.version <- "3.18"
 
 .SH EXAMPLES
 .fi
@@ -68,6 +78,12 @@ dependencies, recursively. This may require more intensive dependencies
 searches, therefore we increase the depth value to 15:
 
 	cran2crux Module -ro 15
+
+This will show potential updates of installed modules and then will generate
+updated ports:
+
+	cran2crux -so
+	cran2crux -u
 
 .fi
 .PP
