@@ -32,7 +32,7 @@ module <- args[1]
 cliopt <- args[2]
 depth <- args[3]
 
-# start by loading the available packages database
+# load the available packages database
 #pkgsdb <- available.packages()
 #biocdb <- available.packages(repos = BiocManager::repositories())
 pkgsdb <- available.packages(repos = BiocManager::repositories())
