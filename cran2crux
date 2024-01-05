@@ -20,6 +20,7 @@ help_menu(){
 	echo "options:"
 	echo "  -r,   --recursive        create ports for dependencies, recursively"
 	echo "  -ro,  --recursive-opt    create ports for optional dependencies, too"
+	echo "  -so,  --show-old         check for updates of installed modules"
 	echo "  -h,   --help             print help and exit"
 	echo "dependencies depth:"
 	echo "   integer > 0             set higher (>10) if dependencies list is large"
@@ -33,6 +34,12 @@ fi
 
 if [[ "$2" = "-h" ]] || [[ "$2" = "--help" ]]; then
 	help_menu
+	exit 0
+fi
+
+# Check for updates of installed modules and exit
+if [[ "$1" = "-so" ]] || [[ "$1" = "--show-old" ]]; then
+	Rscript $R_SCRIPT_PATH/old2new.R
 	exit 0
 fi
 
