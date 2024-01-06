@@ -1,29 +1,34 @@
 # cran2crux: write CRUX ports for R modules from CRAN
 
 ## Description
-The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) for R modules available from [CRAN](https://cran.r-project.org/) and [BioConductor](https://bioconductor.org/). The tool creates its output in the current directory; if the port already exists, cran2crux will overwrite it (!), so it is advisable to run it in an empty directory. 
+The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/) modules available from [CRAN](https://cran.r-project.org/) and [BioConductor](https://bioconductor.org/). The tool creates its output in the current directory; if the port already exists, cran2crux will overwrite it (!), so it is advisable to run it in an empty directory. 
 
-Running `cran2crux Module` will produce a port named `r4-module`.
+Running `cran2crux Module` will produce a port named `r4-module`. Any dots in the name are replaced by a dash and any dashes in the version are replaced by dots.
 
 ![img](./cran2crux.png)
 
 ## Installation
-A port is available [here](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/cran2crux), or just do:
+cran2crux depends on [BiocManager](https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html) and, of course, R from contrib. Ports are available here: [r4-biocmanager](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/r4-biocmanager), [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/cran2crux). Or just do:
 
+    httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/ppetrov/#r4-biocmanager r4-biocmanager
     httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/ppetrov/#cran2crux cran2crux
 
 
 ## Configuration
-You should modify `/etc/cran2crux.conf` to fill in the maintainer line and select a [CRAN mirror](https://cran.r-project.org/mirrors.html). The `R`-language syntax is used, therefore settings look like this:
+You should modify `/etc/cran2crux.conf` to fill in the maintainer line, specify a [CRAN mirror](https://cran.r-project.org/mirrors.html), and adjust the BioConductor version. The `R`-language syntax is used, therefore settings look like this:
 ```R
 maintainer.info <- c("Petar Petrov, slackalaxy at gmail dot com")
 cranrepo.url <- "https://cloud.r-project.org"
+bioc.version <- "3.18"
 ```
 ## Options
-* **Dependencies**
+* **Dependencies and dependencies depth**
   * `-r`, `--recursive`: create ports for `Module`, its dependencies and their own dependencies, recursively.  
   * `-ro`, `--recursive-opt`: create port for `Module`, its dependencies, optional dependencies and their own dependencies recursively. This may require to set *dependencies depth* to a higher number (see below).  
-* **Dependencies depth**. A positive integer, *after* the `-r` or `-ro` option. This defines how many iterations of dependencies searches will be performed. Set to a higher value (>10) if you expect the list is large. If none is provided, the default of 5 iterations is used.
+    * **Dependencies depth**. A positive integer, *after* the `-r` or `-ro` option. This defines how many iterations of dependencies searches will be performed. Set to a higher value (>10) if you expect the list is large. If none is provided, the default of 5 iterations is used. You will typically need this when generating ports for optional dependencies.
+* **Updates**
+  * `-so`, `--show-old`: check with CRAN or BioConductor for updates of modules that are already installed.
+  * `-u`, `--update`: generate fresh ports for installed modules for which a newer version is available from upstream.
 
 ## Dependencies listed in the port
 cran2crux adds dependencies information from CRAN to the port, as follows:
@@ -68,6 +73,22 @@ Although the dependencies rows are automatically filled, the corresponding ports
 Parsing `-ro` will do as above, including what's *optional*. We set the `depth` value to 15, as this requires more searches:
 
 	cran2crux Seurat -ro 15
+
+To check which of the installed modules have a newer version upstream:
+
+    cra2crux -so
+
+The output reports the modules, versions differences, as well as the ports that build them:
+```
+       Module Installed ReposVer            Port
+       future    1.33.0   1.33.1       r4-future
+ future.apply    1.11.0   1.11.1 r4-future-apply
+         mgcv     1.9-0    1.9-1         r4-mgcv
+    segmented     2.0-0    2.0-1    r4-segmented
+```
+This will create updated ports for the four modules above:
+
+    cran2crux -u
 
 ## r4-modules repository
 I am currently building a repository of ports for CRAN modules. It is still a work in progress, but can be viewed [here](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
