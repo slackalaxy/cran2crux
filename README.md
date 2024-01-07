@@ -1,21 +1,19 @@
 # cran2crux: write CRUX ports for R modules from CRAN
 
 ## Description
-The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/) modules available from [CRAN](https://cran.r-project.org/) and [BioConductor](https://bioconductor.org/). The tool creates its output in the current directory; if the port already exists, cran2crux will overwrite it (!), so it is advisable to run it in an empty directory. 
-
-Running `cran2crux Module` will produce a port named `r4-module`. Any dots in the name are replaced by a dash and any dashes in the version are replaced by dots.
+The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/) modules available from [CRAN](https://cran.r-project.org/) and [BioConductor](https://bioconductor.org/). Running `cran2crux Module` will produce a port named `r4-module`. Any dots in the name are replaced by a dashes and any dashes in the version are replaced by dots. The tool creates its output in the current directory; if the port already exists, cran2crux will overwrite it (!), so it is advisable to run it in an empty directory. 
 
 ![img](./cran2crux.png)
 
 ## Installation
-cran2crux depends on [BiocManager](https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html) and, of course, R from contrib. Ports are available here: [r4-biocmanager](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/r4-biocmanager), [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/cran2crux). Or just do:
+cran2crux depends on R and [BiocManager](https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html). I provide ports for [r4-biocmanager](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/r4-biocmanager) and [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/cran2crux). Or just do:
 
     httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/ppetrov/#r4-biocmanager r4-biocmanager
     httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/ppetrov/#cran2crux cran2crux
 
 
 ## Configuration
-You should modify `/etc/cran2crux.conf` to fill in the maintainer line, specify a [CRAN mirror](https://cran.r-project.org/mirrors.html), and adjust the BioConductor version. The `R`-language syntax is used, therefore settings look like this:
+You should modify `/etc/cran2crux.conf` to fill in the maintainer line, specify a [CRAN mirror](https://cran.r-project.org/mirrors.html), and adjust the BioConductor version. The R syntax is used, therefore settings look like this:
 ```R
 maintainer.info <- c("Petar Petrov, slackalaxy at gmail dot com")
 cranrepo.url <- "https://cloud.r-project.org"
@@ -94,7 +92,9 @@ This will create updated ports for the four modules above:
 I am currently building a repository of ports for CRAN modules. It is still a work in progress, but can be viewed [here](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
 
 ## TODO
-Extend cran2crux to check for updates.
+* Code cleanups.
+* Make cran2crux skip making a port if it is already present in `$pwd`.
+* Expand the r4-modules repo and submit to portdb.
 
 ## Links
 * [R project](https://www.r-project.org/)
