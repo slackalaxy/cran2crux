@@ -16,12 +16,11 @@ show.old <- function(){
                           ReposVer = old$ReposVer,
                           Port = paste0("r4-", tolower(gsub("\\.", "-", old$Package))))
     
-    return(display)
+    return(print(display, row.names = F))
   }else{
-    return(paste("No differences found."))
+    return(cat("No differences found."))
   }
   
 }
 
-# show old
-print(show.old(), row.names = F)
+show.old()
