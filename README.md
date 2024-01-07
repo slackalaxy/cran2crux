@@ -74,7 +74,7 @@ Parsing `-ro` will do as above, including what's *optional*. We set the `depth` 
 
 To check which of the installed modules have a newer version upstream:
 
-    cra2crux -so
+    cran2crux -so
 
 The output reports the modules, versions differences, as well as the ports that build them:
 ```
@@ -93,7 +93,7 @@ I am currently building a repository of ports for CRAN modules. It is still a wo
 
 ## TODO
 * Code cleanups.
-* Make cran2crux skip making a port if it is already present in `$pwd`.
+* Make cran2crux skip making a port if it is already present in `pwd`.
 * Expand the r4-modules repo and submit to portdb.
 
 ## Links
