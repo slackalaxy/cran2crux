@@ -18,7 +18,7 @@ show.old <- function(){
     
     return(print(display, row.names = F))
   }else{
-    return(cat("No differences found."))
+    return(cat("No differences found.\n"))
   }
   
 }
