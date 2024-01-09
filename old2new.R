@@ -10,7 +10,6 @@ options(repos = c(CRAN = cranrepo.url))
 show.old <- function(){
   if (!is.null(old.packages())) {
     old <- as.data.frame(old.packages())
-    #row.names(old) <- NULL
     display <- data.frame(Module = old$Package,
                           Installed = old$Installed,
                           ReposVer = old$ReposVer,
@@ -18,7 +17,7 @@ show.old <- function(){
     
     return(print(display, row.names = F))
   }else{
-    return(cat("No differences found.\n"))
+    return(cat("All packages are up to date.\n"))
   }
   
 }
