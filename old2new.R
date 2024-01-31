@@ -13,8 +13,7 @@ show.old <- function(){
     display <- data.frame(Port = paste0("r4-", tolower(gsub("\\.", "-", old$Package))),
                           Module = old$Package,
                           Installed = old$Installed,
-                          ReposVer = old$ReposVer,
-                          Repository = old$Repository)
+                          ReposVer = old$ReposVer)
     
     return(print(display, row.names = F))
   }else{
