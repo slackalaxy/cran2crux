@@ -9,11 +9,12 @@ options(repos = c(CRAN = cranrepo.url))
 # Report modules with potential updates
 show.old <- function(){
   if (!is.null(old.packages())) {
-    old <- as.data.frame(old.packages(repos = BiocManager::repositories()))
-    display <- data.frame(Module = old$Package,
+    old <- as.data.frame(suppressMessages(old.packages(repos = BiocManager::repositories())))
+    display <- data.frame(Port = paste0("r4-", tolower(gsub("\\.", "-", old$Package))),
+                          Module = old$Package,
                           Installed = old$Installed,
                           ReposVer = old$ReposVer,
-                          Port = paste0("r4-", tolower(gsub("\\.", "-", old$Package))))
+                          Repository = old$Repository)
     
     return(print(display, row.names = F))
   }else{
