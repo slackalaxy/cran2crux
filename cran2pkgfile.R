@@ -35,7 +35,7 @@ depth <- args[3]
 # load the available packages database
 #pkgsdb <- available.packages()
 #biocdb <- available.packages(repos = BiocManager::repositories())
-pkgsdb <- available.packages(repos = BiocManager::repositories())
+pkgsdb <- suppressMessages(available.packages(repos = BiocManager::repositories()))
 
 # is a package on CRAN or BioC?
 on.cran <- function(x) {
