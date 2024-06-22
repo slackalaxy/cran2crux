@@ -41,7 +41,7 @@ pkgsdb <- suppressMessages(available.packages(repos = BiocManager::repositories(
 on.cran <- function(x) {
   result <- try(pkgsdb[x, "Package"], silent = T)
   if (inherits(result, 'try-error')) {
-    cat(x, "is not on CRAN or BioC Skipping...", "\n")
+    #cat(x, "is not on CRAN or BioC Skipping...", "\n")
     return(NULL)
   }
   return(result)
