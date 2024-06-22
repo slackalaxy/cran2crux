@@ -65,11 +65,13 @@ cran.available <- function(x){
 # prepare deps
 names.only <- function(x){
   x <- gsub("[\r\n]", " ", x)
+  x <- gsub(",", ", ", x)
   x <- strsplit(x, ", ")
 
   # remove within brackets
   y <- c()
   for (i in x[[1]]) {
+    i <- gsub(" ", "", as.character(i))
     j <- gsub("\\s*\\([^\\)]+\\)","",as.character(i))
     y <- c(y, j)
   }
