@@ -208,7 +208,7 @@ pkgfile.write <- function(module = NULL){
   
   dir.create(pkgfile.nam)
   write(pkgfile, paste0(pkgfile.nam, "/", "Pkgfile"))
-  cat("=======> Created", "port for", module, ":", paste0(pkgfile.nam, "/", "Pkgfile"), "\n")
+  cat("=======> Created port for", module, "in:", paste0(pkgfile.nam), "\n")
   #return(pkgfile)
 }
 
