@@ -89,7 +89,7 @@ This will create updated ports for the four modules above:
     cran2crux -u
 
 ## r4-modules repository
-I am currently building a repository of ports for CRAN modules. It is still a work in progress, but can be viewed [here](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
+My repository of ports for CRAN modules can be found [here](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
 
 ## TODO
 * Code cleanups.
