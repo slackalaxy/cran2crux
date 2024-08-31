@@ -6,10 +6,10 @@ The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) fo
 ![img](./cran2crux.png)
 
 ## Installation
-cran2crux depends on R and [BiocManager](https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html). I provide ports for [r4-biocmanager](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/r4-biocmanager) and [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/ppetrov/cran2crux). Or just do:
+cran2crux depends on R and [BiocManager](https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html). I provide ports for [r4-biocmanager](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules/r4-biocmanager) and [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules/cran2crux). Or just do:
 
-    httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/ppetrov/#r4-biocmanager r4-biocmanager
-    httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/ppetrov/#cran2crux cran2crux
+    httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/r4-modules/#r4-biocmanager r4-biocmanager
+    httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/r4-modules/#cran2crux cran2crux
 
 
 ## Configuration
