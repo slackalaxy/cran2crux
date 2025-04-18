@@ -12,6 +12,7 @@ module="$1"
 option="$2"
 depth="$3"
 
+PWD=$(pwd)
 DIRNAM=$(basename $PWD)
 
 # exit if no module specified
@@ -52,6 +53,12 @@ fi
 # no permissions to write in dir
 if [ ! -w "$PWD" ]; then
 	echo "Folder '$DIRNAM' is not writable."
+	exit 1
+fi
+
+# current dir does not exist anymore
+if [ ! -d "$PWD" ] ; then
+	echo "Folder '$DIRNAM' does not exist."
 	exit 1
 fi
 
