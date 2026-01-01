@@ -1,7 +1,7 @@
 # cran2crux: write CRUX ports for R modules from CRAN
 
 ## Description
-The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/) modules available from [CRAN](https://cran.r-project.org/) and [BioConductor](https://bioconductor.org/). Running `cran2crux Module` will produce a port named `r4-module`. Any dots in the name are replaced by a dashes and any dashes in the version are replaced by dots. The tool creates its output in the current directory; if the port already exists, cran2crux will overwrite it (!), so it is advisable to run it in an empty directory. 
+The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/) modules (libraries) available from [CRAN](https://cran.r-project.org/) and [BioConductor](https://bioconductor.org/). Running `cran2crux Module` will produce a port named `r4-module`. Any dots in the name are replaced by a dashes (e.g. foo.library - > foo-library) and any dashes in the version are replaced by dots (e.g. 1-2-3 -> 1.2.3). The tool creates its output in the current directory; if the port already exists, cran2crux will overwrite it (!), so it is advisable to run it in an empty directory. 
 
 ![img](./cran2crux.png)
 
@@ -17,7 +17,7 @@ You should modify `/etc/cran2crux.conf` to fill in the maintainer line, specify 
 ```R
 maintainer.info <- c("Petar Petrov, slackalaxy at gmail dot com")
 cranrepo.url <- "https://cloud.r-project.org"
-bioc.version <- "3.18"
+bioc.version <- "3.22"
 ```
 ## Options
 * **Dependencies and dependencies depth**
@@ -89,12 +89,10 @@ This will create updated ports for the four modules above:
     cran2crux -u
 
 ## r4-modules repository
-My repository of ports for CRAN modules can be found [here](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
+My repository of ports for R modules ("libraries" is the correct term) can be found [here](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
 
 ## TODO
-* Code cleanups.
 * Make cran2crux skip making a port if it is already present in `pwd`.
-* Expand the r4-modules repo and submit to portdb.
 
 ## Links
 * [R project](https://www.r-project.org/)
