@@ -50,6 +50,12 @@ if [[ "$1" = "-so" ]] || [[ "$1" = "--show-old" ]]; then
 	exit 0
 fi
 
+# current dir is not empty
+if [ ! -z "$(ls -A $PWD)" ]; then
+	echo "Folder '$DIRNAM' is not empty. Use a clean one to generate ports."
+	exit 1
+fi
+
 # no permissions to write in dir
 if [ ! -w "$PWD" ]; then
 	echo "Folder '$DIRNAM' is not writable."
