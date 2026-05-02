@@ -22,8 +22,8 @@ bioc.version <- "3.22"
 ## Options
 * **Dependencies and dependencies depth**
   * `-r`, `--recursive`: create ports for `Module`, its dependencies and their own dependencies, recursively.  
-  * `-ro`, `--recursive-opt`: create port for `Module`, its dependencies, optional dependencies and their own dependencies recursively. This may require to set *dependencies depth* to a higher number (see below).  
-    * **Dependencies depth**. A positive integer, *after* the `-r` or `-ro` option. This defines how many iterations of dependencies searches will be performed. Set to a higher value (>10) if you expect the list is large. If none is provided, the default of 5 iterations is used. You will typically need this when generating ports for optional dependencies.
+  * `-ro`, `--recursive-opt`: create port for `Module`, its dependencies, optional dependencies and their own dependencies (including optional) recursively. This may require to set *dependencies depth* to a higher number (see below). This is rather slow and it's usage is discouraged. 
+  * **Dependencies depth**. A positive integer, *after* the `-r` or `-ro` option. This defines how many iterations of dependencies searches will be performed. Set to a higher value (>10) if you expect the list is large. If none is provided, the default of 5 iterations is used. You will typically need this when generating ports for optional dependencies.
 * **Updates**
   * `-so`, `--show-old`: check with CRAN or BioConductor for updates of modules that are already installed.
   * `-u`, `--update`: generate fresh ports for installed modules for which a newer version is available from upstream.
