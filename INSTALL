@@ -1,0 +1,7 @@
+Files go as follows:
+
+/etc/cran2crux.conf
+/usr/bin/cran2crux
+/usr/lib/cran2crux/cran2pkgfile.R
+/usr/lib/cran2crux/old2new.R
+/usr/lib/cran2crux/repos2db.R
