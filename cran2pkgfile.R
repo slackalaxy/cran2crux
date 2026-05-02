@@ -35,7 +35,11 @@ depth <- args[3]
 # load the available packages database
 #pkgsdb <- available.packages()
 #biocdb <- available.packages(repos = BiocManager::repositories())
-pkgsdb <- suppressMessages(available.packages(repos = BiocManager::repositories()))
+# TODO: invoke this before the script, to avoid loading it every time a new port is generated
+#pkgsdb <- suppressMessages(available.packages(repos = BiocManager::repositories()))
+
+# This must be generated in advance by repos2db.R
+pkgsdb <- readRDS("/tmp/pkgsdb.rds")
 
 # is a package on CRAN or BioC?
 on.cran <- function(x) {
