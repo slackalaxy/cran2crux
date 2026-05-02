@@ -223,7 +223,7 @@ if (cliopt == "-r" | cliopt == "--recursive") {
     pkgfile.write(d)
   }
 }else if(cliopt == "-ro" | cliopt == "--recursive-opt") {
-  cat("===== Generating optional dependencies recursively, as well. Be patient", "\n")
+  cat("===== Generating optional dependencies recursively, as well. Be patient.", "\n")
   modules.all <- deepdeps(module, pkgsdb, depth, opts = TRUE)
   for (d in modules.all){
     pkgfile.write(d)
