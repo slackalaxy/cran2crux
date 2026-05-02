@@ -104,5 +104,8 @@ if [[ -z "$3" ]]; then
 	depth="5"
 fi
 
+# generate the packages db
+Rscript $R_SCRIPT_PATH/repos2db.R
+
 # run the R script
 Rscript $R_SCRIPT_PATH/cran2pkgfile.R "$module" "$option" "$depth"
