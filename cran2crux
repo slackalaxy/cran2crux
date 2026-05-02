@@ -4,7 +4,7 @@
 #
 # Written by Petar Petrov, slackalaxy at gmail dot com
 
-# path to R script
+# path to R scripts
 R_SCRIPT_PATH="/usr/lib/cran2crux"
 
 # what command line arguments mean
@@ -15,14 +15,8 @@ depth="$3"
 PWD=$(pwd)
 DIRNAM=$(basename $PWD)
 
-# exit if no module specified
-if [[ "$1" = "" ]]; then
-	echo "=======> ERROR: 'module' not specified"
-	exit 1
-fi
-
 help_menu(){
-	echo "usage: $(basename $0) module [options] <dependencies depth>"
+	echo "usage: $(basename $0) Module [options] <dependencies depth>"
 	echo "options:"
 	echo "  -r,   --recursive        create ports for dependencies, recursively"
 	echo "  -ro,  --recursive-opt    create ports for optional dependencies, too"
@@ -32,6 +26,13 @@ help_menu(){
 	echo "dependencies depth:"
 	echo "   integer > 0             set higher (>10) if dependencies list is large"
 }
+
+# exit if no module specified
+if [[ "$1" = "" ]]; then
+	echo "===== 'Module' not specified!"
+	help_menu
+	exit 0
+fi
 
 # print help
 if [[ "$1" = "-h" ]] || [[ "$1" = "--help" ]]; then
@@ -104,7 +105,7 @@ if [[ -z "$3" ]]; then
 	depth="5"
 fi
 
-# generate the packages db
+# generate the packages db (one per cran2crux run)
 Rscript $R_SCRIPT_PATH/repos2db.R
 
 # run the R script
