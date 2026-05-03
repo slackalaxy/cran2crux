@@ -25,15 +25,15 @@ bioc.version <- "3.22"
 cran2crux Module [options] <dependencies depth>
 ```
 
-* **Sync with upstream**  
+* **Sync with upstream** [options]:  
   * `-s`, `--sync`: synchronise with upstream, by fetching information from CRAN and BioConductor about available packages and their versions.
-* **Dependencies [options]**
+* **Dependencies** [options]  
   * `-r`, `--recursive`: create ports for `Module`, its dependencies and their own dependencies, recursively.  
   * `-ro`, `--recursive-opt`: create port for `Module`, its dependencies, optional dependencies and their own dependencies (including optional) recursively. This may require to set *dependencies depth* to a higher number (see below). This is rather slow and it's usage is discouraged. 
-* **Updates [options]**
+* **Updates** [options]  
   * `-so`, `--show-old`: check with CRAN or BioConductor for updates of modules that are already installed.
   * `-u`, `--update`: generate fresh ports for installed modules for which a newer version is available from upstream.
-* **\<Dependencies depth>**. A positive integer, *after* the `-r` or `-ro` option. This defines how many iterations of dependencies searches will be performed. Set to a higher value (>10) if you expect the list is large. If none is provided, the default of 5 iterations is used. You will typically need this when generating ports for optional dependencies.
+* **Dependencies depth** \<integer>: (optional) parse a positive integer, *after* the `-r` or `-ro` option. This defines how many iterations of dependencies searches will be performed. Set to a higher value (>10) if you expect the list is large. **If none is provided, the default of 5 iterations is used.** Usually this can be left out. You will typically need this when generating ports for optional dependencies.
 
 ## Dependencies listed in the port
 cran2crux adds dependencies information from CRAN to the port, as follows:
