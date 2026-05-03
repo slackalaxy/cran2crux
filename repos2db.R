@@ -10,7 +10,7 @@ options(repos = c(CRAN = cranrepo.url))
 args <- commandArgs(trailingOnly = TRUE)
 rds_path <- args[1]
 
-cat("... Downloading libraries database", "\n")
+cat("... Sync with CRAN and BioConductor", "\n")
 
 # check for old
 old <- as.data.frame(suppressMessages(old.packages(repos = BiocManager::repositories())))
@@ -20,4 +20,4 @@ saveRDS(old, paste0(rds_path, "old.rds"))
 pkgsdb <- suppressMessages(available.packages(repos = BiocManager::repositories()))
 saveRDS(pkgsdb, paste0(rds_path, "pkgsdb.rds"))
 
-cat("... Done! Saved in ", rds_path, "\n")
+cat("... Done! Saved in", rds_path, "\n")
