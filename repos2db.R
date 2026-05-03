@@ -20,4 +20,4 @@ saveRDS(old, paste0(rds_path, "old.rds"))
 pkgsdb <- suppressMessages(available.packages(repos = BiocManager::repositories()))
 saveRDS(pkgsdb, paste0(rds_path, "pkgsdb.rds"))
 
-cat("... Done! Saved as /tmp/pkgsdb.rds", "\n")
+cat("... Done! Saved in ", rds_path, "\n")
