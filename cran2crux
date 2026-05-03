@@ -7,6 +7,11 @@
 # path to R scripts
 R_SCRIPT_PATH="/usr/lib/cran2crux"
 
+# path to RDS tmp files, specific for the user
+RDS_PATH="/tmp/cran2crux-$(whoami)/"
+export RDS_PATH
+mkdir -p $RDS_PATH
+
 # what command line arguments mean
 module="$1"
 option="$2"
