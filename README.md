@@ -1,4 +1,9 @@
-# cran2crux: write CRUX ports for R modules from CRAN and BioConductor
+# cran2crux: write CRUX ports for R modules
+
+## Supported repositories:
+* [CRAN](https://cran.r-project.org/) -- The Comprehensive R Archive Network
+* [BioConductor](https://bioconductor.org/) -- Open source software for
+Bioinformatics
 
 ## Description
 The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/) modules (libraries) available from [CRAN](https://cran.r-project.org/) and [BioConductor](https://bioconductor.org/). Running `cran2crux Module` will produce a port named `r4-module`. Any dots in the name are replaced by a dashes (e.g. foo.library - > foo-library) and any dashes in the version are replaced by dots (e.g. 1-2-3 -> 1.2.3). The tool creates its output in the current directory, which must be **empty**. 
@@ -27,13 +32,13 @@ cran2crux Module [options] <dependencies depth>
 
 * **Sync with upstream** [options]:  
   * `-s`, `--sync`: synchronise with upstream, by fetching information from CRAN and BioConductor about available packages and their versions.
-* **Dependencies** [options]  
+* **Dependencies** [options]:  
   * `-r`, `--recursive`: create ports for `Module`, its dependencies and their own dependencies, recursively.  
   * `-ro`, `--recursive-opt`: create port for `Module`, its dependencies, optional dependencies and their own dependencies (including optional) recursively. This may require to set *dependencies depth* to a higher number (see below). This is rather slow and it's usage is discouraged. 
-* **Updates** [options]  
+* **Updates** [options]:  
   * `-so`, `--show-old`: check with CRAN or BioConductor for updates of modules that are already installed.
   * `-u`, `--update`: generate fresh ports for installed modules for which a newer version is available from upstream.
-* **Dependencies depth** \<integer>: (optional) parse a positive integer, *after* the `-r` or `-ro` option. This defines how many iterations of dependencies searches will be performed. Set to a higher value (>10) if you expect the list is large. **If none is provided, the default of 5 iterations is used.** Usually this can be left out. You will typically need this when generating ports for optional dependencies.
+* **Dependencies depth** \<integer>: (optional) parse a positive integer, *after* the `-r` or `-ro` option. This defines how many iterations of dependencies searches will be performed. Set to a higher value (>10) if you expect the list is large. If none is provided, **the default of 5** iterations is used. Usually this can be left out. You will typically need this when generating ports for optional dependencies.
 
 ## Dependencies listed in the port
 cran2crux adds dependencies information from CRAN to the port, as follows:
