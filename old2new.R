@@ -15,7 +15,7 @@ old <- readRDS(paste0(rds_path, "old.rds"))
 
 # Report modules with potential updates
 show.old <- function(){
-  cat("... Checking for updates of installed packages", "\n")
+  #cat("... Checking for updates of installed packages", "\n")
   #old <- as.data.frame(suppressMessages(old.packages(repos = BiocManager::repositories())))
   if (nrow(old) > 0) {
     display <- data.frame(Port = paste0("r4-", tolower(gsub("\\.", "-", old$Package))),
