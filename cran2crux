@@ -51,6 +51,7 @@ fi
 
 # Check for updates of installed modules and exit
 if [[ "$1" = "-so" ]] || [[ "$1" = "--show-old" ]]; then
+	Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
 	Rscript $R_SCRIPT_PATH/old2new.R "$RDS_PATH"
 	exit 0
 fi
@@ -78,7 +79,7 @@ if [[ "$1" = "-u" ]] || [[ "$1" = "--update" ]]; then
 
 	# generate the packages db (one per cran2crux run)
 	# TODO: make this into a --sync option?
-	Rscript $R_SCRIPT_PATH/repos2db.R $RDS_PATH
+	Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
 	
 	new_array=$( Rscript $R_SCRIPT_PATH/old2new.R "$RDS_PATH" | sed '1d' | awk '{print $2}' | tr '\n' ' ' )
 	
