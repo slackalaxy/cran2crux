@@ -19,6 +19,10 @@ so it is advisable to run it in an empty directory.
 
 .SH OPTIONS
 .TP
+.B "\-s, \-\-sync"
+Synchronise with upstream, by fetching information from CRAN and BioConductor
+about available packages and their versions.
+.TP
 .B "\-r, \-\-recursive"
 Create port for module and create ports for its dependencies and their own
 dependencies, recursively.
@@ -79,6 +83,10 @@ dependencies, recursively. This may require more intensive dependencies
 searches, therefore we increase the depth value to 15:
 
 	cran2crux Module -ro 15
+
+This will freshly sync with CRAN and BioConductor:
+
+	cran2crux -s
 
 This will show potential updates of installed modules:
 
