@@ -26,7 +26,7 @@ cran2crux Module [options] <dependencies depth>
 ```
 
 * **Sync with upstream**  
-  * `-s`, `--sync` will fetch information from CRAN and BioConductor about available packages and their versions.
+  * `-s`, `--sync`: synchronise with upstream, by fetching information from CRAN and BioConductor about available packages and their versions.
 * **Dependencies [options]**
   * `-r`, `--recursive`: create ports for `Module`, its dependencies and their own dependencies, recursively.  
   * `-ro`, `--recursive-opt`: create port for `Module`, its dependencies, optional dependencies and their own dependencies (including optional) recursively. This may require to set *dependencies depth* to a higher number (see below). This is rather slow and it's usage is discouraged. 
