@@ -23,6 +23,9 @@
 # get cranrepo and maintainer information
 source("/etc/cran2crux.conf")
 
+# get RDS path exported from the cran2crux bash script
+rds_path <- Sys.getenv("RDS_PATH")
+
 # set cran repo
 options(repos = c(CRAN = cranrepo.url))
 
@@ -39,7 +42,7 @@ depth <- args[3]
 #pkgsdb <- suppressMessages(available.packages(repos = BiocManager::repositories()))
 
 # This must be generated in advance by repos2db.R
-pkgsdb <- readRDS("/tmp/pkgsdb.rds")
+pkgsdb <- readRDS(paste0(rds_path, "pkgsdb.rds"))
 
 # is a package on CRAN or BioC?
 on.cran <- function(x) {
