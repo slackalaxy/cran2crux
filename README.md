@@ -1,14 +1,16 @@
-# cran2crux: write CRUX ports for R modules
+# cran2crux: write CRUX ports for R libraries
 
-## Supported repositories:
+![img](./cran2crux.png)
+
+## Supported repositories
 * [CRAN](https://cran.r-project.org/) -- The Comprehensive R Archive Network
 * [BioConductor](https://bioconductor.org/) -- Open source software for
 Bioinformatics
 
 ## Description
-The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/) modules (libraries) available from [CRAN](https://cran.r-project.org/) and [BioConductor](https://bioconductor.org/). Running `cran2crux Module` will produce a port named `r4-module`. Any dots in the name are replaced by a dashes (e.g. foo.library - > foo-library) and any dashes in the version are replaced by dots (e.g. 1-2-3 -> 1.2.3). The tool creates its output in the current directory, which must be **empty**. 
+The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/) modules (libraries) available from [CRAN](https://cran.r-project.org/) and [BioConductor](https://bioconductor.org/). Simply running `cran2crux Module` will produce a port named `r4-module`.
 
-![img](./cran2crux.png)
+Any dots in the name are replaced by a dashes (e.g. foo.library - > foo-library) and any dashes in the version are replaced by dots (e.g. 1-2-3 -> 1.2.3). The tool creates its output in the current directory, which must be **empty**.  
 
 ## Installation
 cran2crux depends on R and [BiocManager](https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html). I provide ports for [r4-biocmanager](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules/r4-biocmanager) and [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules/cran2crux). Or just do:
@@ -25,7 +27,6 @@ cranrepo.url <- "https://cloud.r-project.org"
 bioc.version <- "3.22"
 ```
 ## Usage
-
 ```
 cran2crux Module [options] <dependencies depth>
 ```
@@ -53,9 +54,17 @@ Create a new empty directory to call cran2crux there:
 mkdir r4-modules
 cd r4-modules 
 ```
-As an example, let's create a port for the [Seurat](https://cran.r-project.org/web/packages/Seurat/) module that provides a set of tools for single cell genomics ([Satija lab](https://satijalab.org/seurat/)). The following will create a single port, called `r4-seurat`:
 
-    cran2crux Seurat
+Sync with upstream:
+```BASH
+cran2crux -s
+```
+
+Let's create a port for the [Seurat](https://cran.r-project.org/web/packages/Seurat/) module that provides a set of tools for single cell genomics ([Satija lab](https://satijalab.org/seurat/)). The following will create a single port, called `r4-seurat`:
+
+```BASH
+cran2crux Seurat
+```
 
 This is the port:
 ```BASH
@@ -77,17 +86,17 @@ build() {
 }
 ```
 Although the dependencies rows are automatically filled, the corresponding ports are *not* created. Adding the `-r` option will create ports for `Seurat` and what it depends on, recursively:
-
-    cran2crux Seurat -r
-	
+```BASH
+cran2crux Seurat -r
+```
 Parsing `-ro` will do as above, including what's *optional*. We set the `depth` value to 15, as this requires more searches:
-
-	cran2crux Seurat -ro 15
-
-To check which of the installed modules have a newer version upstream:
-
-    cran2crux -so
-
+```BASH
+cran2crux Seurat -ro 15
+```
+To check which of the installed modules have a newer version upstream (don't forget to syn first by `cran2crux -s`):
+```BASH
+cran2crux -so
+```
 The output reports the modules, versions differences, as well as the ports that build them:
 ```
        Module Installed ReposVer            Port
@@ -97,9 +106,9 @@ The output reports the modules, versions differences, as well as the ports that 
     segmented     2.0-0    2.0-1    r4-segmented
 ```
 This will create updated ports for the four modules above:
-
-    cran2crux -u
-
+```BASH
+cran2crux -u
+```
 ## r4-modules repository
 My repository of ports for R modules ("libraries" is the correct term) can be found [here](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules).
 
