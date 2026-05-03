@@ -162,14 +162,14 @@ if [ "${1:0:1}" = "-" ]; then
 	exit 1
 fi
 
-# option is invalid
+# second option is invalid
 if [[ ! -z "$2" ]] && [[ "$2" != "-r" ]] && [[ "$2" != "-ro" ]] && [[ "$2" != "--recursive" ]] && [[ "$2" != "--recursive-opt" ]]; then
 	echo "$(basename $0): invalid option $2"
 	exit 1
 fi
 
 # dependencies depth is invalid
-if [[ ! -z "$3" ]] && [[ ! $3 -gt 0 ]]; then
+if [[ ! -z "$3" ]] && [[ ! "$3" -gt 0 ]]; then
 	echo "$(basename $0): invalid integer $3"
 	exit 1
 fi
