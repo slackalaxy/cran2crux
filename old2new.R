@@ -3,15 +3,12 @@
 # get cranrepo and maintainer information
 source("/etc/cran2crux.conf")
 
-# get RDS path exported from the cran2crux bash script
-rds_path <- Sys.getenv("RDS_PATH")
-
-if (RDS_PATH == "") {
-  stop("Error: RDS_PATH environment variable is not set!")
-}
-
 # set cran repo
 #options(repos = c(CRAN = cranrepo.url))
+
+# input arguments order
+args <- commandArgs(trailingOnly = TRUE)
+rds_path <- args[1]
 
 # This must be generated in advance by repos2db.R
 old <- readRDS(paste0(rds_path, "old.rds"))
