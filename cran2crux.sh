@@ -5,6 +5,11 @@
 # Written by Petar Petrov, slackalaxy at gmail dot com
 #
 
+if [ ! -d "$(pwd)" ] ; then
+	echo "=====> ERROR: current dir does not exist."
+	exit 1
+fi
+
 # path to R scripts; export, because it's called from functions
 R_SCRIPT_PATH="/usr/lib/cran2crux"
 export R_SCRIPT_PATH
@@ -74,10 +79,6 @@ rds_check(){
 
 # check current work dir
 pwd_check(){
-	if [ ! -d "$PWD" ] ; then
-		echo "=====> ERROR: $DIRNAM does not exist."
-		exit 1
-	fi
 
 	perm_check $PWD
 
