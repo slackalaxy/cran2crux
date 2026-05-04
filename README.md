@@ -31,8 +31,6 @@ bioc.version <- "3.22"
 cran2crux Module [options] <dependencies depth>
 ```
 
-* **Sync with upstream** [options]:  
-  * `-s`, `--sync`: synchronise with upstream, by fetching information from CRAN and BioConductor about available packages and their versions.
 * **Dependencies** [options]:  
   * `-r`, `--recursive`: create ports for `Module`, its dependencies and their own dependencies, recursively.  
   * `-ro`, `--recursive-opt`: create port for `Module`, its dependencies, optional dependencies and their own dependencies (including optional) recursively. This may require to set *dependencies depth* to a higher number (see below). This is rather slow and it's usage is discouraged. 
@@ -54,12 +52,6 @@ Create a new empty directory to call cran2crux there:
 mkdir r4-modules
 cd r4-modules 
 ```
-
-Sync with upstream:
-```BASH
-cran2crux -s
-```
-
 Let's create a port for the [Seurat](https://cran.r-project.org/web/packages/Seurat/) module that provides a set of tools for single cell genomics ([Satija lab](https://satijalab.org/seurat/)). The following will create a single port, called `r4-seurat`:
 
 ```BASH
