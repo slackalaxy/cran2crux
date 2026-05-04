@@ -3,6 +3,7 @@
 # cran2crux: Write CRUX ports for R modules from CRAN
 #
 # Written by Petar Petrov, slackalaxy at gmail dot com
+#
 
 # path to R scripts; export, because it's called from functions
 R_SCRIPT_PATH="/usr/lib/cran2crux"
@@ -35,7 +36,7 @@ help_menu(){
 	echo "   integer > 0             set higher (>10) if dependencies list is large"
 }
 
-# Check permissions
+# generic permissions check
 perm_check(){
 	local CHECK="${1}"
 	
@@ -52,25 +53,14 @@ perm_check(){
 	fi
 }
 
-# Automaically sync, if user forgot
-auto_sync(){
-	# folder does not exist, so sync
-	if [[ ! -d "$RDS_PATH" ]]; then
-		mkdir -p $RDS_PATH
-		Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
-	fi
-	
-	# folder exists, just check it
+# check RDS folder and files without syncing
+rds_check(){
+	# folder exists, just check
 	if [[ -d "$RDS_PATH" ]]; then
 		perm_check "$RDS_PATH"
 	fi
 	
-	# files do not exist, so sync
-	if [[ ! -f "$RDS_PATH/old.rds" ]] || [[ ! -f "$RDS_PATH/pkgsdb.rds" ]] ; then
-		Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
-	fi
-	
-	# file(s) exist, just check them
+	# file(s) exist, just check
 	if [[ -f "$RDS_PATH/old.rds" ]]; then
 		perm_check "$RDS_PATH/old.rds"
 	fi
@@ -78,6 +68,36 @@ auto_sync(){
 	if [[ -f "$RDS_PATH/pkgsdb.rds" ]]; then
 		perm_check "$RDS_PATH/pkgsdb.rds"
 	fi
+}
+
+
+# Automaically sync, if the folder does not exist or files are missing
+auto_sync(){
+	
+	# folder does not exist, so sync
+	if [[ ! -d "$RDS_PATH" ]]; then
+		mkdir -p $RDS_PATH
+		Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
+	fi
+	
+	# folder exists, just check it
+	#if [[ -d "$RDS_PATH" ]]; then
+	#	perm_check "$RDS_PATH"
+	#fi
+	
+	# either of the files does not exist, so sync
+	if [[ ! -f "$RDS_PATH/old.rds" ]] || [[ ! -f "$RDS_PATH/pkgsdb.rds" ]] ; then
+		Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
+	fi
+	
+	# file(s) exist, just check them without syncing
+	#if [[ -f "$RDS_PATH/old.rds" ]]; then
+	#	perm_check "$RDS_PATH/old.rds"
+	#fi
+	
+	#if [[ -f "$RDS_PATH/pkgsdb.rds" ]]; then
+	#	perm_check "$RDS_PATH/pkgsdb.rds"
+	#fi
 }
 
 # exit if no module specified
@@ -100,12 +120,14 @@ fi
 
 # Sync with CRAN and BioConductor
 if [[ "$1" = "-s" ]] || [[ "$1" = "--sync" ]]; then
-	auto_sync
+	rds_check
+	mkdir -p $RDS_PATH
 	Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
 	exit 0
 fi
 
 # in case, user did not --sync
+rds_check
 auto_sync
 
 # Check for updates of installed modules and exit
@@ -140,9 +162,9 @@ if [[ "$1" = "-u" ]] || [[ "$1" = "--update" ]]; then
 	# TODO: make this into a --sync option?
 	#Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
 	
-	new_array=$( Rscript $R_SCRIPT_PATH/old2new.R "$RDS_PATH" | sed '1d' | awk '{print $2}' | tr '\n' ' ' )
+	declare -a new_array=( $( Rscript $R_SCRIPT_PATH/old2new.R "$RDS_PATH" | sed '1d' | awk '{print $2}' | tr '\n' ' ' ) )
 	
-	if [ ${#new_array[@]} -eq 1 ]; then
+	if [ ${#new_array[@]} -eq 0 ]; then
 		echo "All packages are up to date."
 		exit 0
 	fi
