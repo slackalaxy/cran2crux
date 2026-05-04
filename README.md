@@ -85,7 +85,7 @@ Parsing `-ro` will do as above, including what's *optional*. We set the `depth` 
 ```BASH
 cran2crux Seurat -ro 15
 ```
-To check which of the installed modules have a newer version upstream (don't forget to syn first by `cran2crux -s`):
+To check which of the installed modules have a newer version upstream:
 ```BASH
 cran2crux -so
 ```
