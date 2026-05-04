@@ -83,7 +83,7 @@ pwd_check(){
 	perm_check $PWD
 
 	if [ ! -z "$(ls -A $PWD)" ]; then
-		echo "=====> ERROR: $DIRNAM is not empty. Use a clean one to generate ports."
+		echo "=====> ERROR: Folder '$DIRNAM' is not empty. Use a clean one to generate ports."
 		exit 1
 	fi	
 }
