@@ -110,6 +110,23 @@ optional <- function(package = NULL,
   return(y)
 }
 
+# Upstream repo
+upstream <- function(package = NULL,
+                     pkgs.db = NULL){
+  
+  upstream <- pkgs.db[package, "Repository"]
+  upstream <- unlist(strsplit(upstream, "\\/"))[3]
+  
+  if(upstream == "cloud.r-project.org"){
+    u <- "CRAN"
+  }else if(upstream == "bioconductor.org"){
+    u <- "BioC"
+  } else {
+    u <- "UNKNOWN"
+  }
+  return(u)
+}
+
 # This is able to retrieve deps of multiple packages
 depsofdeps <- function(modules = NULL, pkgsdb = NULL, opts = NULL){
   deep <- c(modules)
@@ -213,7 +230,7 @@ pkgfile.write <- function(module = NULL){
   
   dir.create(pkgfile.nam)
   write(pkgfile, paste0(pkgfile.nam, "/", "Pkgfile"))
-  cat("=======> Created port for", module, ":", pkgfile.nam, "\n")
+  cat("=======>", "[", upstream(module, pkgsdb), "]", "Created port for", module, ":", pkgfile.nam, "\n")
   #return(pkgfile)
 }
 
