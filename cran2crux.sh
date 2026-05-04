@@ -20,12 +20,14 @@ depth="$3"
 
 PWD=$(pwd)
 DIRNAM=$(basename $PWD)
+export PWD
+export DIRNAM
+
 
 help_menu(){
 	echo "usage: $(basename $0) Module [options] <dependencies depth>"
 	echo ""
 	echo "[options]:"
-	echo "  -s,   --sync             sync with CRAN and BioConductor repos"
 	echo "  -r,   --recursive        create ports for dependencies, recursively"
 	echo "  -ro,  --recursive-opt    create ports for optional dependencies, too"
 	echo "  -so,  --show-old         check for updates of installed modules"
@@ -53,7 +55,7 @@ perm_check(){
 	fi
 }
 
-# check RDS folder and files without syncing
+# check RDS folder and files permissions without syncing
 rds_check(){
 	# folder exists, just check
 	if [[ -d "$RDS_PATH" ]]; then
@@ -70,37 +72,28 @@ rds_check(){
 	fi
 }
 
+# check current work dir
+pwd_check(){
+	if [ ! -d "$PWD" ] ; then
+		echo "=====> ERROR: $DIRNAM does not exist."
+		exit 1
+	fi
 
-# Automaically sync, if the folder does not exist or files are missing
-auto_sync(){
-	
-	# folder does not exist, so sync
-	if [[ ! -d "$RDS_PATH" ]]; then
-		mkdir -p $RDS_PATH
-		Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
-	fi
-	
-	# folder exists, just check it
-	#if [[ -d "$RDS_PATH" ]]; then
-	#	perm_check "$RDS_PATH"
-	#fi
-	
-	# either of the files does not exist, so sync
-	if [[ ! -f "$RDS_PATH/old.rds" ]] || [[ ! -f "$RDS_PATH/pkgsdb.rds" ]] ; then
-		Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
-	fi
-	
-	# file(s) exist, just check them without syncing
-	#if [[ -f "$RDS_PATH/old.rds" ]]; then
-	#	perm_check "$RDS_PATH/old.rds"
-	#fi
-	
-	#if [[ -f "$RDS_PATH/pkgsdb.rds" ]]; then
-	#	perm_check "$RDS_PATH/pkgsdb.rds"
-	#fi
+	perm_check $PWD
+
+	if [ ! -z "$(ls -A $PWD)" ]; then
+		echo "=====> ERROR: $DIRNAM is not empty. Use a clean one to generate ports."
+		exit 1
+	fi	
 }
 
-# exit if no module specified
+# sync with upstream
+repo_sync(){
+	mkdir -p $RDS_PATH
+	Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
+}
+
+# exit if no module specified, printing help
 if [[ "$1" = "" ]]; then
 	echo "===== 'Module' not specified!"
 	help_menu
@@ -118,50 +111,19 @@ if [[ "$2" = "-h" ]] || [[ "$2" = "--help" ]]; then
 	exit 0
 fi
 
-# Sync with CRAN and BioConductor
-if [[ "$1" = "-s" ]] || [[ "$1" = "--sync" ]]; then
-	rds_check
-	mkdir -p $RDS_PATH
-	Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
-	exit 0
-fi
-
-# in case, user did not --sync
 rds_check
-auto_sync
 
 # Check for updates of installed modules and exit
 if [[ "$1" = "-so" ]] || [[ "$1" = "--show-old" ]]; then
-	#Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
+	repo_sync
 	Rscript $R_SCRIPT_PATH/old2new.R "$RDS_PATH"
 	exit 0
 fi
 
-# current dir is not empty
-if [ ! -z "$(ls -A $PWD)" ]; then
-	echo "Folder '$DIRNAM' is not empty. Use a clean one to generate ports."
-	exit 1
-fi
-
-# no permissions to write in dir
-if [ ! -w "$PWD" ]; then
-	echo "Folder '$DIRNAM' is not writable."
-	exit 1
-fi
-
-# current dir does not exist anymore
-if [ ! -d "$PWD" ] ; then
-	echo "Folder '$DIRNAM' does not exist."
-	exit 1
-fi
-
 # Generate updated ports for installed modules
 if [[ "$1" = "-u" ]] || [[ "$1" = "--update" ]]; then
-
-	# generate the packages db (one per cran2crux run)
-	# TODO: make this into a --sync option?
-	#Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
-	
+	pwd_check
+	repo_sync
 	declare -a new_array=( $( Rscript $R_SCRIPT_PATH/old2new.R "$RDS_PATH" | sed '1d' | awk '{print $2}' | tr '\n' ' ' ) )
 	
 	if [ ${#new_array[@]} -eq 0 ]; then
@@ -180,19 +142,19 @@ fi
 
 # module name starts with a dash
 if [ "${1:0:1}" = "-" ]; then
-	echo "$(basename $0): invalid module name $1"
+	echo "=====> ERROR: invalid module name $1"
 	exit 1
 fi
 
 # second option is invalid
 if [[ ! -z "$2" ]] && [[ "$2" != "-r" ]] && [[ "$2" != "-ro" ]] && [[ "$2" != "--recursive" ]] && [[ "$2" != "--recursive-opt" ]]; then
-	echo "$(basename $0): invalid option $2"
+	echo "=====> ERROR: invalid option $2"
 	exit 1
 fi
 
 # dependencies depth is invalid
 if [[ ! -z "$3" ]] && [[ ! "$3" -gt 0 ]]; then
-	echo "$(basename $0): invalid integer $3"
+	echo "=====> ERROR: invalid integer $3"
 	exit 1
 fi
 
@@ -201,8 +163,7 @@ if [[ -z "$3" ]]; then
 	depth="5"
 fi
 
-# generate the packages db (one per cran2crux run)
-#Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
-
 # run the R script
+pwd_check
+repo_sync
 Rscript $R_SCRIPT_PATH/cran2pkgfile.R "$module" "$option" "$depth" "$RDS_PATH"
