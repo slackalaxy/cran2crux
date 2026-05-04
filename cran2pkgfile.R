@@ -46,7 +46,7 @@ pkgsdb <- readRDS(paste0(rds_path, "pkgsdb.rds"))
 on.cran <- function(x) {
   result <- try(pkgsdb[x, "Package"], silent = T)
   if (inherits(result, 'try-error')) {
-    cat(x, "is not on CRAN or BioConductor...", "\n")
+    #cat(x, "is not on CRAN or BioConductor...", "\n")
     return(NULL)
   }
   return(result)
