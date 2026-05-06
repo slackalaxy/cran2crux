@@ -30,17 +30,18 @@ export DIRNAM
 
 
 help_menu(){
-	echo "usage: $(basename $0) Module [options] <dependencies depth>"
+	echo ""
+	echo "Create a port:............ $(basename $0) Foo"
+	echo "Create port & deps:....... $(basename $0) Foo [-r/-ro] [integer]"
+	echo "Manage updates:........... $(basename $0) [-so/-u]"
 	echo ""
 	echo "[options]:"
 	echo "  -r,   --recursive        create ports for dependencies, recursively"
 	echo "  -ro,  --recursive-opt    create ports for optional dependencies, too"
 	echo "  -so,  --show-old         check for updates of installed modules"
-	echo "  -u,   --update           generate updated ports for outdated modules"
-	echo "  -h,   --help             print help and exit"
-	echo ""
-	echo "<dependencies depth>:"
-	echo "   integer > 0             set higher (>10) if dependencies list is large"
+	echo "  -u,   --update           generate updated ports for outdated packages"
+	echo "  -h,   --help             print this help and exit"
+	echo "   integer > 0             (optional) depth of the recursive deps search"
 }
 
 # generic permissions check
@@ -96,7 +97,7 @@ repo_sync(){
 
 # exit if no module specified, printing help
 if [[ "$1" = "" ]]; then
-	echo "===== 'Module' not specified!"
+	#echo "===== 'Module' not specified!"
 	help_menu
 	exit 0
 fi
