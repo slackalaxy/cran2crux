@@ -41,7 +41,6 @@ rds_path <- args[4]
 
 # This must be generated in advance by repos2db.R
 pkgsdb <- readRDS(paste0(rds_path, "pkgsdb.rds"))
-#pkgsdb <- readRDS(paste0("/tmp/cran2crux-petrov/", "pkgsdb.rds"))
 
 # is a package on CRAN or BioC?
 on.cran <- function(x) {
