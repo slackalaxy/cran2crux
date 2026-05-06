@@ -12,20 +12,23 @@ rds_path <- args[1]
 
 # This must be generated in advance by repos2db.R
 old <- readRDS(paste0(rds_path, "old.rds"))
+old <- readRDS(paste0("/tmp/cran2crux-petrov/", "old.rds"))
 
 # Upstream repo better name
 upstream <- function(up = NULL){
-  
-  upstream <- unlist(strsplit(up, "\\/"))[3]
-  
-  if(upstream == "cloud.r-project.org"){
-    u <- "CRAN"
-  }else if(upstream == "bioconductor.org"){
-    u <- "BioC"
-  } else {
-    u <- "UNKNOWN"
+  l <- c()
+  for (i in 1:length(old$Repository)) {
+    upstream <- strsplit(old$Repository[i], "\\/")[[1]][[3]]
+    if(upstream == "cloud.r-project.org"){
+      u <- "CRAN"
+    }else if(upstream == "bioconductor.org"){
+      u <- "BioC"
+    } else {
+      u <- "UNKNOWN"
+    }
+    l <- c(l, u)
   }
-  return(u)
+  return(l)
 }
 
 # Report modules with potential updates
@@ -37,6 +40,7 @@ show.old <- function(){
                           Module = old$Package,
                           Installed = old$Installed,
                           ReposVer = old$ReposVer,
+                          #Repositoty =  unlist(strsplit(old$Repository, "\\/"))[3])
                           Repositoty = upstream(old$Repository))
     
     return(print(display, row.names = F))
