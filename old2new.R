@@ -12,7 +12,7 @@ rds_path <- args[1]
 
 # This must be generated in advance by repos2db.R
 old <- readRDS(paste0(rds_path, "old.rds"))
-old <- readRDS(paste0("/tmp/cran2crux-petrov/", "old.rds"))
+#old <- readRDS(paste0("/tmp/cran2crux-petrov/", "old.rds"))
 
 # Upstream repo better name
 upstream <- function(up = NULL){
