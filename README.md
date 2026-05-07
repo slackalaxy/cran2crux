@@ -1,5 +1,5 @@
 # cran2crux: write CRUX ports for R-packages
-[![Badge](https://img.shields.io/badge/Origin-Slackalaxy-green)]([INSTALL.md](https://github.com/slackalaxy/cran2crux))
+[![Badge](https://img.shields.io/badge/Origin-Slackalaxy-green)](https://github.com/slackalaxy/cran2crux)
 [![Badge](https://img.shields.io/badge/Manuscript-bioRxiv-red)](xxx)
 
 ## Description
