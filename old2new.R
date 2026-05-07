@@ -36,7 +36,7 @@ show.old <- function(){
   #old <- as.data.frame(suppressMessages(old.packages(repos = BiocManager::repositories())))
   if (nrow(old) > 0) {
     display <- data.frame(Port = paste0("r4-", tolower(gsub("\\.", "-", old$Package))),
-                          Module = old$Package,
+                          R_package = old$Package,
                           Installed = old$Installed,
                           ReposVer = old$ReposVer,
                           #Repositoty =  unlist(strsplit(old$Repository, "\\/"))[3])
