@@ -6,10 +6,10 @@
 The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/)-packages available from [CRAN](https://cran.r-project.org/) and [BioConductor](https://bioconductor.org/). Simply running `cran2crux Foo` will produce a port named `r4-foo`. Any dots in the name are replaced by a dashes (e.g. foo.bar - > foo-bar) and any dashes in the version are replaced by dots (e.g. 1-2-3 -> 1.2.3). The tool creates its output in the current work directory, which must be **empty**.  
 
 ## Installation
-cran2crux depends on R and [BiocManager](https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html). I provide ports for [r4-biocmanager](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules/r4-biocmanager) and [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/r4-modules/cran2crux). Or just do:
+cran2crux depends on R and [BiocManager](https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html). I provide ports for [r4-biocmanager](https://github.com/slackalaxy/crux-ports/tree/main/r4/r4-biocmanager) and [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/r4/cran2crux). Or just do:
 
-    httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/r4-modules/#r4-biocmanager r4-biocmanager
-    httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/r4-modules/#cran2crux cran2crux
+    httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/r4/#r4-biocmanager r4-biocmanager
+    httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/r4/#cran2crux cran2crux
 
 
 ## Configuration
@@ -31,7 +31,7 @@ cran2crux adds dependencies information from CRAN to the port, as follows:
 * `# Depends on:` `r` itself, followed by R packages, listed in the **Depends**, **Imports**, and **LinkingTo** fields.
 * `# Optional:` R packages listed in the **Suggests** field.
 
-Some modules are already inbuild in R, such as `methods` from **Depends**, while others listed as **SystemRequirements** lie outside the R ecosystem and cran2crux is not meant to deal with them. It is up to the ports maintainer to find (by `finddeps`?) and add them to the port afterwards.
+Some dependencies are already inbuild in R, such as `methods` from **Depends**, while others listed as **SystemRequirements** lie outside the R ecosystem and cran2crux is not meant to deal with them. It is up to the ports maintainer to find (by `finddeps`?) and add them to the port afterwards.
 
 ## Example
 Create a new empty directory to call cran2crux there:
@@ -39,7 +39,7 @@ Create a new empty directory to call cran2crux there:
 mkdir rrr
 cd rrr 
 ```
-Let's create a port for the [Seurat](https://cran.r-project.org/web/packages/Seurat/) module that provides a set of tools for single cell genomics ([Satija lab](https://satijalab.org/seurat/)). The following will create a single port, called `r4-seurat`:
+Let's create a port for the [Seurat](https://cran.r-project.org/web/packages/Seurat/) R-package that provides a set of tools for single cell genomics ([Satija lab](https://satijalab.org/seurat/)). The following will create a single port, called `r4-seurat`:
 
 ```BASH
 cran2crux Seurat
@@ -72,7 +72,7 @@ Parsing `-ro` will do as above, including what's *optional*. We set the `depth` 
 ```BASH
 cran2crux Seurat -ro 15
 ```
-To check which of the installed modules have a newer version upstream:
+To check which of the installed ports have a newer version upstream:
 ```BASH
 cran2crux -so
 ```
@@ -85,7 +85,7 @@ The output reports the port, R-package name, versions differences, as well as th
       r4-limma      limma    3.68.0   3.68.2       BioC
    r4-nanonext   nanonext     1.8.2    1.9.0       CRAN
 ```
-This will create updated ports for the four modules above:
+This will create updated ports for the five R-packages above:
 ```BASH
 cran2crux -u
 ```
