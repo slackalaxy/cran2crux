@@ -5,6 +5,10 @@
 # Written by Petar Petrov, slackalaxy at gmail dot com
 #
 
+# Exit if something fails:
+# -e: exit immediately if any command fails
+# -u: treat unset variables as an error
+# -o pipefail: pipelines fail if any command in the pipe fails
 set -euo pipefail
 
 PWD="$(pwd)"
@@ -13,10 +17,7 @@ DIRNAM="$(basename "$PWD")"
 # Set path to RDS tmp files, specific for the user
 RDS_PATH="/tmp/cran2crux-$(whoami)/"
 
-# What command line arguments mean
-#module="${1:-}"
-#option="${2:-}"
-#depth="${3:-}"
+# Command line arguments
 arg_a="${1:-}"
 arg_b="${2:-}"
 arg_c="${3:-}"
@@ -24,7 +25,8 @@ arg_c="${3:-}"
 # Check where cran2crux is executed from
 DRIVER_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-# Path to R scripts; check if they exist in the same dir as cran2crux.sh (when testing the script).
+# Path to R scripts; check if they exist in the same dir as cran2crux.sh
+# (useful when testing the script), then check install location.
 if [[ -f "$DRIVER_DIR/repos2db.R" && \
       -f "$DRIVER_DIR/old2new.R" && \
       -f "$DRIVER_DIR/cran2pkgfile.R" ]]; then
@@ -39,7 +41,8 @@ else
     exit 1
 fi
 
-# Path to conf file; check if it exists in the same dir as cran2crux.sh (when testing the script).
+# Path to conf file; check if it exists in the same dir as cran2crux.sh
+# (useful when testing the script), then check install location.
 if [[ -f "$DRIVER_DIR/cran2crux.conf" ]]; then
       echo "=== NOTE : Using cran2crux.conf file from $DRIVER_DIR!"
       CONF_FILE="$DRIVER_DIR/cran2crux.conf"
@@ -49,13 +52,6 @@ else
     echo "=====> ERROR: cran2crux.conf not found."
     exit 1
 fi
-
-# Export, because these are called from functions
-#export PWD
-#export DIRNAM
-#export RDS_PATH
-#export CONF_FILE
-#export R_SCRIPT_PATH
 
 help_menu() {
 	echo ""
@@ -69,7 +65,7 @@ help_menu() {
 	echo "  -so,  --show-old         check for updates of installed modules"
 	echo "  -u,   --update           generate updated ports for outdated packages"
 	echo "  -h,   --help             print this help and exit"
-	echo "   integer > 0             (optional) depth of the recursive deps search"
+	echo "   integer >= 2             (optional) depth of the recursive deps search"
 }
 
 # generic permissions check
@@ -121,40 +117,50 @@ repo_sync() {
 	Rscript "$R_SCRIPT_PATH/repos2db.R" "$RDS_PATH" "$CONF_FILE"
 }
 
-# Write Pkgfile
-pkgfile_write() {
+# pkgfile_write arguments check ($arg_a, $arg_b, $arg_c)
+pkgfile_args_check() {
 	local module="${1:-}"
 	local option="${2:-}"
 	local depth="${3:-}"
 	
 	# module name starts with a dash
 	if [[ "${module:0:1}" = "-" ]]; then
-		echo "=====> ERROR: invalid module name ${module}"
+		echo "=====> ERROR: invalid R-package name or option '${module}'"
 		exit 1
 	fi
 
 	# second option is invalid
 	if [[ -n "$option" ]] && [[ "$option" != "-r" ]] && [[ "$option" != "-ro" ]] && [[ "$option" != "--recursive" ]] && [[ "$option" != "--recursive-opt" ]]; then
-		echo "=====> ERROR: invalid option ${option}"
+		echo "=====> ERROR: invalid option for creating port '${option}'"
 		exit 1
 	fi
-
-	# dependencies depth is invalid
-	if [[ -n "$depth" ]] && [[ ! "$depth" -gt 0 ]]; then
-		echo "=====> ERROR: invalid integer ${depth}"
-		exit 1
+    	
+    	# is depth valid? to use it as a number
+	if [[ -n "$depth" ]]; then	
+    		if ! (( depth > 1 )) 2>/dev/null; then
+       			echo "=====> ERROR: invalid integer '${depth}' (must be >= 2)"
+        		exit 1
+    		fi
 	fi
+}
 
+# Write Pkgfile
+pkgfile_write() {
+	local module="${1:-}"
+	local option="${2:-}"
+	local depth="${3:-}"
+	
+	
 	# if no dependencies depth is specified, use "5" as default depth value
 	if [[ -z "$depth" ]]; then
 		depth="5"
 	fi
+	
 	Rscript "$R_SCRIPT_PATH/cran2pkgfile.R" "$module" "$option" "$depth" "$RDS_PATH" "$CONF_FILE"
 }
 
-# exit if no module specified, printing help
+# exit if no R-package specified, printing help
 if [[ "$arg_a" = "" ]]; then
-	#echo "===== 'Module' not specified!"
 	help_menu
 	exit 0
 fi
@@ -183,8 +189,8 @@ fi
 if [[ "$arg_a" = "-u" ]] || [[ "$arg_a" = "--update" ]]; then
 	pwd_check
 	repo_sync
-	#declare -a new_array=( $( Rscript "$R_SCRIPT_PATH/old2new.R" "$RDS_PATH" "$CONF_FILE" | sed '1d' | awk '{print $2}' | tr '\n' ' ' ) )
-	 declare -a new_array=( $(Rscript "$R_SCRIPT_PATH/old2new.R" "$RDS_PATH" "$CONF_FILE" | sed '1d' | awk '{print $2}') )
+	
+	declare -a new_array=( $(Rscript "$R_SCRIPT_PATH/old2new.R" "$RDS_PATH" "$CONF_FILE" | sed '1d' | awk '{print $2}') )
 	
 	if [[ ${#new_array[@]} -eq 0 ]]; then
 		echo "All packages are up to date."
@@ -192,14 +198,13 @@ if [[ "$arg_a" = "-u" ]] || [[ "$arg_a" = "--update" ]]; then
 	fi
 	
 	for module in "${new_array[@]}"; do
-		#Rscript "$R_SCRIPT_PATH/cran2pkgfile.R" "$module" "$option" "$depth" "$RDS_PATH" "$CONF_FILE"
 		pkgfile_write "$module" "" ""
 	done
 	exit 0
 fi
 
 # run the R script
+pkgfile_args_check "$arg_a" "$arg_b" "$arg_c"
 pwd_check
 repo_sync
-#Rscript "$R_SCRIPT_PATH/cran2pkgfile.R" "$module" "$option" "$depth" "$RDS_PATH" "$CONF_FILE"
 pkgfile_write "$arg_a" "$arg_b" "$arg_c"
