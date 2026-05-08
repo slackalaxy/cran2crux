@@ -1,25 +1,5 @@
 #!/usr/bin/env Rscript
 
-# Copyright (c) 2023 Petar Petrov, slackalaxy at gmail dot com
-#   
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#   
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-# 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 # input arguments order
 args <- commandArgs(trailingOnly = TRUE)
 module <- args[1]
@@ -29,17 +9,10 @@ rds_path <- args[4]
 conf_file <- args[5]
 
 # get cranrepo and maintainer information; don't hard code it
-#source("/etc/cran2crux.conf")
 source(paste0(conf_file))
 
 # set cran repo
 options(repos = c(CRAN = cranrepo.url))
-
-# load the available packages database
-#pkgsdb <- available.packages()
-#biocdb <- available.packages(repos = BiocManager::repositories())
-# TODO: invoke this before the script, to avoid loading it every time a new port is generated
-#pkgsdb <- suppressMessages(available.packages(repos = BiocManager::repositories()))
 
 # This must be generated in advance by repos2db.R
 pkgsdb <- readRDS(paste0(rds_path, "pkgsdb.rds"))
@@ -48,7 +21,6 @@ pkgsdb <- readRDS(paste0(rds_path, "pkgsdb.rds"))
 on.cran <- function(x) {
   result <- try(pkgsdb[x, "Package"], silent = T)
   if (inherits(result, 'try-error')) {
-    #cat(x, "is not on CRAN or BioConductor...", "\n")
     return(NULL)
   }
   return(result)
@@ -233,7 +205,6 @@ pkgfile.write <- function(module = NULL){
   dir.create(pkgfile.nam)
   write(pkgfile, paste0(pkgfile.nam, "/", "Pkgfile"))
   cat("  [", upstream(module, pkgsdb), "]", "Created port for", module, ":", pkgfile.nam, "\n")
-  #return(pkgfile)
 }
 
 # write the ports
