@@ -5,35 +5,63 @@
 # Written by Petar Petrov, slackalaxy at gmail dot com
 #
 
-if [ ! -d "$(pwd)" ] ; then
-	echo "=====> ERROR: current dir does not exist."
-	exit 1
+set -euo pipefail
+
+PWD="$(pwd)"
+DIRNAM="$(basename "$PWD")"
+
+# Set path to RDS tmp files, specific for the user
+RDS_PATH="/tmp/cran2crux-$(whoami)/"
+
+# What command line arguments mean
+#module="${1:-}"
+#option="${2:-}"
+#depth="${3:-}"
+arg_a="${1:-}"
+arg_b="${2:-}"
+arg_c="${3:-}"
+
+# Check where cran2crux is executed from
+DRIVER_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+# Path to R scripts; check if they exist in the same dir as cran2crux.sh (when testing the script).
+if [[ -f "$DRIVER_DIR/repos2db.R" && \
+      -f "$DRIVER_DIR/old2new.R" && \
+      -f "$DRIVER_DIR/cran2pkgfile.R" ]]; then
+      echo "=== NOTE : Using cran2crux R scripts from $DRIVER_DIR!"
+      R_SCRIPT_PATH="$DRIVER_DIR"
+elif [[ -f "/usr/lib/cran2crux/repos2db.R" && \
+        -f "/usr/lib/cran2crux/old2new.R" && \
+        -f "/usr/lib/cran2crux/cran2pkgfile.R" ]]; then
+        R_SCRIPT_PATH="/usr/lib/cran2crux"
+else
+    echo "=====> ERROR: cran2crux R scripts not found."
+    exit 1
 fi
 
-# path to R scripts; export, because it's called from functions
-R_SCRIPT_PATH="/usr/lib/cran2crux"
-export R_SCRIPT_PATH
+# Path to conf file; check if it exists in the same dir as cran2crux.sh (when testing the script).
+if [[ -f "$DRIVER_DIR/cran2crux.conf" ]]; then
+      echo "=== NOTE : Using cran2crux.conf file from $DRIVER_DIR!"
+      CONF_FILE="$DRIVER_DIR/cran2crux.conf"
+elif [[ -f "/etc/cran2crux.conf" ]]; then
+        CONF_FILE="/etc/cran2crux.conf"
+else
+    echo "=====> ERROR: cran2crux.conf not found."
+    exit 1
+fi
 
-# path to RDS tmp files, specific for the user
-RDS_PATH="/tmp/cran2crux-$(whoami)/"
-export RDS_PATH
+# Export, because these are called from functions
+#export PWD
+#export DIRNAM
+#export RDS_PATH
+#export CONF_FILE
+#export R_SCRIPT_PATH
 
-# what command line arguments mean
-module="$1"
-option="$2"
-depth="$3"
-
-PWD=$(pwd)
-DIRNAM=$(basename $PWD)
-export PWD
-export DIRNAM
-
-
-help_menu(){
+help_menu() {
 	echo ""
-	echo "Create a port:............ $(basename $0) Foo"
-	echo "Create port & deps:....... $(basename $0) Foo [-r/-ro] [integer]"
-	echo "Manage updates:........... $(basename $0) [-so/-u]"
+	echo "Create a port: ........... $(basename "$0") Foo"
+	echo "Create port & deps: ...... $(basename "$0") Foo [-r/-ro] [integer]"
+	echo "Manage updates: .......... $(basename "$0") [-so/-u]"
 	echo ""
 	echo "[options]:"
 	echo "  -r,   --recursive        create ports for dependencies, recursively"
@@ -45,7 +73,7 @@ help_menu(){
 }
 
 # generic permissions check
-perm_check(){
+perm_check() {
 	local CHECK="${1}"
 	
 	# folder not readable	
@@ -62,7 +90,7 @@ perm_check(){
 }
 
 # check RDS folder and files permissions without syncing
-rds_check(){
+rds_check() {
 	# folder exists, just check
 	if [[ -d "$RDS_PATH" ]]; then
 		perm_check "$RDS_PATH"
@@ -79,36 +107,65 @@ rds_check(){
 }
 
 # check current work dir
-pwd_check(){
-
-	perm_check $PWD
-
-	if [ ! -z "$(ls -A $PWD)" ]; then
+pwd_check() {
+	perm_check "$PWD"
+	if [[ -d "$PWD" ]] && [[ -n $(ls -A "$PWD" 2>/dev/null) ]]; then
 		echo "=====> ERROR: Folder '$DIRNAM' is not empty. Use a clean one to generate ports."
 		exit 1
 	fi	
 }
 
 # sync with upstream
-repo_sync(){
-	mkdir -p $RDS_PATH
-	Rscript $R_SCRIPT_PATH/repos2db.R "$RDS_PATH"
+repo_sync() {
+	mkdir -p "$RDS_PATH"
+	Rscript "$R_SCRIPT_PATH/repos2db.R" "$RDS_PATH" "$CONF_FILE"
+}
+
+# Write Pkgfile
+pkgfile_write() {
+	local module="${1:-}"
+	local option="${2:-}"
+	local depth="${3:-}"
+	
+	# module name starts with a dash
+	if [[ "${module:0:1}" = "-" ]]; then
+		echo "=====> ERROR: invalid module name ${module}"
+		exit 1
+	fi
+
+	# second option is invalid
+	if [[ -n "$option" ]] && [[ "$option" != "-r" ]] && [[ "$option" != "-ro" ]] && [[ "$option" != "--recursive" ]] && [[ "$option" != "--recursive-opt" ]]; then
+		echo "=====> ERROR: invalid option ${option}"
+		exit 1
+	fi
+
+	# dependencies depth is invalid
+	if [[ -n "$depth" ]] && [[ ! "$depth" -gt 0 ]]; then
+		echo "=====> ERROR: invalid integer ${depth}"
+		exit 1
+	fi
+
+	# if no dependencies depth is specified, use "5" as default depth value
+	if [[ -z "$depth" ]]; then
+		depth="5"
+	fi
+	Rscript "$R_SCRIPT_PATH/cran2pkgfile.R" "$module" "$option" "$depth" "$RDS_PATH" "$CONF_FILE"
 }
 
 # exit if no module specified, printing help
-if [[ "$1" = "" ]]; then
+if [[ "$arg_a" = "" ]]; then
 	#echo "===== 'Module' not specified!"
 	help_menu
 	exit 0
 fi
 
 # print help
-if [[ "$1" = "-h" ]] || [[ "$1" = "--help" ]]; then
+if [[ "$arg_a" = "-h" ]] || [[ "$arg_a" = "--help" ]]; then
 	help_menu
 	exit 0
 fi
 
-if [[ "$2" = "-h" ]] || [[ "$2" = "--help" ]]; then
+if [[ "$arg_b" = "-h" ]] || [[ "$arg_b" = "--help" ]]; then
 	help_menu
 	exit 0
 fi
@@ -116,56 +173,33 @@ fi
 rds_check
 
 # Check for updates of installed modules and exit
-if [[ "$1" = "-so" ]] || [[ "$1" = "--show-old" ]]; then
+if [[ "$arg_a" = "-so" ]] || [[ "$arg_a" = "--show-old" ]]; then
 	repo_sync
-	Rscript $R_SCRIPT_PATH/old2new.R "$RDS_PATH"
+	Rscript "$R_SCRIPT_PATH/old2new.R" "$RDS_PATH" "$CONF_FILE"
 	exit 0
 fi
 
 # Generate updated ports for installed modules
-if [[ "$1" = "-u" ]] || [[ "$1" = "--update" ]]; then
+if [[ "$arg_a" = "-u" ]] || [[ "$arg_a" = "--update" ]]; then
 	pwd_check
 	repo_sync
-	declare -a new_array=( $( Rscript $R_SCRIPT_PATH/old2new.R "$RDS_PATH" | sed '1d' | awk '{print $2}' | tr '\n' ' ' ) )
+	#declare -a new_array=( $( Rscript "$R_SCRIPT_PATH/old2new.R" "$RDS_PATH" "$CONF_FILE" | sed '1d' | awk '{print $2}' | tr '\n' ' ' ) )
+	 declare -a new_array=( $(Rscript "$R_SCRIPT_PATH/old2new.R" "$RDS_PATH" "$CONF_FILE" | sed '1d' | awk '{print $2}') )
 	
-	if [ ${#new_array[@]} -eq 0 ]; then
+	if [[ ${#new_array[@]} -eq 0 ]]; then
 		echo "All packages are up to date."
 		exit 0
 	fi
 	
-	option=""
-	depth=""
-	
-	for module in ${new_array[@]}; do
-		Rscript $R_SCRIPT_PATH/cran2pkgfile.R "$module" "$option" "$depth" "$RDS_PATH"
+	for module in "${new_array[@]}"; do
+		#Rscript "$R_SCRIPT_PATH/cran2pkgfile.R" "$module" "$option" "$depth" "$RDS_PATH" "$CONF_FILE"
+		pkgfile_write "$module" "" ""
 	done
 	exit 0
-fi
-
-# module name starts with a dash
-if [ "${1:0:1}" = "-" ]; then
-	echo "=====> ERROR: invalid module name $1"
-	exit 1
-fi
-
-# second option is invalid
-if [[ ! -z "$2" ]] && [[ "$2" != "-r" ]] && [[ "$2" != "-ro" ]] && [[ "$2" != "--recursive" ]] && [[ "$2" != "--recursive-opt" ]]; then
-	echo "=====> ERROR: invalid option $2"
-	exit 1
-fi
-
-# dependencies depth is invalid
-if [[ ! -z "$3" ]] && [[ ! "$3" -gt 0 ]]; then
-	echo "=====> ERROR: invalid integer $3"
-	exit 1
-fi
-
-# if no dependencies depth is specified, use "5" as default depth value
-if [[ -z "$3" ]]; then
-	depth="5"
 fi
 
 # run the R script
 pwd_check
 repo_sync
-Rscript $R_SCRIPT_PATH/cran2pkgfile.R "$module" "$option" "$depth" "$RDS_PATH"
+#Rscript "$R_SCRIPT_PATH/cran2pkgfile.R" "$module" "$option" "$depth" "$RDS_PATH" "$CONF_FILE"
+pkgfile_write "$arg_a" "$arg_b" "$arg_c"
