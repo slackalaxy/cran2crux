@@ -1,14 +1,16 @@
 #!/usr/bin/env Rscript
 
-# get cranrepo and maintainer information
-source("/etc/cran2crux.conf")
-
-# set cran repo
-#options(repos = c(CRAN = cranrepo.url))
-
 # input arguments order
 args <- commandArgs(trailingOnly = TRUE)
 rds_path <- args[1]
+conf_file <- args[2]
+
+# get cranrepo and maintainer information; don't hard code it
+#source("/etc/cran2crux.conf")
+source(paste0(conf_file))
+
+# set cran repo
+#options(repos = c(CRAN = cranrepo.url))
 
 # This must be generated in advance by repos2db.R
 old <- readRDS(paste0(rds_path, "old.rds"))
