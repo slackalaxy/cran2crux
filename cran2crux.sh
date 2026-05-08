@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# cran2crux: Write CRUX ports for R modules from CRAN
+# cran2crux: Write CRUX ports for R modules from CRAN and Bioconductor
 #
 # Written by Petar Petrov, slackalaxy at gmail dot com
 #
