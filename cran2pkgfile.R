@@ -56,7 +56,7 @@ on.cran <- function(x) {
 
 # stop already if input does not exist
 if (is.null(on.cran(module))) {
-  stop()
+  stop(paste0("'", module, "'", " is not on CRAN or BioConductor...", "\n"))
 }
 
 # leave only deps available on CRAN
