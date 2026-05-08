@@ -47,8 +47,8 @@ if [[ -f "$DRIVER_DIR/repos2db.R" && \
 	echo "=== NOTE : Using cran2crux R scripts from "$DRIVER_DIR"!"
 	R_SCRIPT_PATH="$DRIVER_DIR"
 elif [[ -f "$INST_DIR/repos2db.R" && \
-        -f "$INST_DIR/cran2crux/old2new.R" && \
-        -f "$INST_DIR/cran2crux/cran2pkgfile.R" ]]; then
+        -f "$INST_DIR/old2new.R" && \
+        -f "$INST_DIR/cran2pkgfile.R" ]]; then
         R_SCRIPT_PATH="$INST_DIR"
 else
 	error_message "cran2crux R scripts not found"
