@@ -6,7 +6,6 @@ rds_path <- args[1]
 conf_file <- args[2]
 
 # get cranrepo and maintainer information
-#source("/etc/cran2crux.conf")
 source(conf_file)
 
 # set cran repo
