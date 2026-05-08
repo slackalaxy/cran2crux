@@ -6,11 +6,7 @@ rds_path <- args[1]
 conf_file <- args[2]
 
 # get cranrepo and maintainer information; don't hard code it
-#source("/etc/cran2crux.conf")
 source(paste0(conf_file))
-
-# set cran repo
-#options(repos = c(CRAN = cranrepo.url))
 
 # This must be generated in advance by repos2db.R
 old <- readRDS(paste0(rds_path, "old.rds"))
@@ -34,14 +30,11 @@ upstream <- function(up = NULL){
 
 # Report modules with potential updates
 show.old <- function(){
-  #cat("... Checking for updates of installed packages", "\n")
-  #old <- as.data.frame(suppressMessages(old.packages(repos = BiocManager::repositories())))
   if (nrow(old) > 0) {
     display <- data.frame(Port = paste0("r4-", tolower(gsub("\\.", "-", old$Package))),
                           R_package = old$Package,
                           Installed = old$Installed,
                           ReposVer = old$ReposVer,
-                          #Repositoty =  unlist(strsplit(old$Repository, "\\/"))[3])
                           Repositoty = upstream(old$Repository))
     
     return(print(display, row.names = F))
