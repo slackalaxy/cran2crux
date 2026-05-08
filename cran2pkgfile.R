@@ -20,18 +20,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# get cranrepo and maintainer information
-source("/etc/cran2crux.conf")
-
-# set cran repo
-options(repos = c(CRAN = cranrepo.url))
-
 # input arguments order
 args <- commandArgs(trailingOnly = TRUE)
 module <- args[1]
 cliopt <- args[2]
 depth <- args[3]
 rds_path <- args[4]
+conf_file <- args[5]
+
+# get cranrepo and maintainer information; don't hard code it
+#source("/etc/cran2crux.conf")
+source(paste0(conf_file))
+
+# set cran repo
+options(repos = c(CRAN = cranrepo.url))
 
 # load the available packages database
 #pkgsdb <- available.packages()
@@ -230,7 +232,7 @@ pkgfile.write <- function(module = NULL){
   
   dir.create(pkgfile.nam)
   write(pkgfile, paste0(pkgfile.nam, "/", "Pkgfile"))
-  cat("=======>", "[", upstream(module, pkgsdb), "]", "Created port for", module, ":", pkgfile.nam, "\n")
+  cat("  [", upstream(module, pkgsdb), "]", "Created port for", module, ":", pkgfile.nam, "\n")
   #return(pkgfile)
 }
 
@@ -241,7 +243,7 @@ if (cliopt == "-r" | cliopt == "--recursive") {
     pkgfile.write(d)
   }
 }else if(cliopt == "-ro" | cliopt == "--recursive-opt") {
-  cat("===== Generating optional dependencies recursively, as well. Be patient.", "\n")
+  cat("=== Generating optional dependencies recursively, as well. Be patient.", "\n")
   modules.all <- deepdeps(module, pkgsdb, depth, opts = TRUE)
   for (d in modules.all){
     pkgfile.write(d)
