@@ -14,6 +14,15 @@ set -euo pipefail
 PWD="$(pwd)"
 DIRNAM="$(basename "$PWD")"
 
+# Check where cran2crux is executed from
+DRIVER_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+# Default installation dir for R scripts
+INST_DIR="/usr/lib/cran2crux"
+
+# Default configuration dir
+ETC_DIR="/etc"
+
 # Set path to RDS tmp files, specific for the user
 RDS_PATH="/tmp/cran2crux-$(whoami)/"
 
@@ -21,9 +30,6 @@ RDS_PATH="/tmp/cran2crux-$(whoami)/"
 arg_a="${1:-}"
 arg_b="${2:-}"
 arg_c="${3:-}"
-
-# Check where cran2crux is executed from
-DRIVER_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Display error message, following R's style...
 error_message() {
@@ -40,10 +46,10 @@ if [[ -f "$DRIVER_DIR/repos2db.R" && \
       -f "$DRIVER_DIR/cran2pkgfile.R" ]]; then
 	echo "=== NOTE : Using cran2crux R scripts from "$DRIVER_DIR"!"
 	R_SCRIPT_PATH="$DRIVER_DIR"
-elif [[ -f "/usr/lib/cran2crux/repos2db.R" && \
-        -f "/usr/lib/cran2crux/old2new.R" && \
-        -f "/usr/lib/cran2crux/cran2pkgfile.R" ]]; then
-        R_SCRIPT_PATH="/usr/lib/cran2crux"
+elif [[ -f "$INST_DIR/repos2db.R" && \
+        -f "$INST_DIR/cran2crux/old2new.R" && \
+        -f "$INST_DIR/cran2crux/cran2pkgfile.R" ]]; then
+        R_SCRIPT_PATH="$INST_DIR"
 else
 	error_message "cran2crux R scripts not found"
 fi
@@ -53,8 +59,8 @@ fi
 if [[ -f "$DRIVER_DIR/cran2crux.conf" ]]; then
 	echo "=== NOTE : Using cran2crux.conf file from "$DRIVER_DIR"!"
 	CONF_FILE="$DRIVER_DIR/cran2crux.conf"
-elif [[ -f "/etc/cran2crux.conf" ]]; then
-        CONF_FILE="/etc/cran2crux.conf"
+elif [[ -f "$ETC_DIR/cran2crux.conf" ]]; then
+        CONF_FILE="$ETC_DIR/cran2crux.conf"
 else
 	error_message "cran2crux.conf not found"
 fi
@@ -64,7 +70,7 @@ help_menu() {
 	echo ""
 	echo "Usage: cran2crux R-package [-r/-ro] <depth> OR cran2crux [-so/-u]"
 	echo "[options]:"
-    	echo "  -r,   --recursive      generate ports for dependencies, recursively"
+	echo "  -r,   --recursive      generate ports for dependencies, recursively"
 	echo "  -ro,  --recursive-opt  include ports for optional dependencies"
 	echo "  -so,  --show-old       show outdated packages"
 	echo "  -u,   --update         generate updated ports for outdated packages"
