@@ -11,6 +11,7 @@ cran2crux depends on R and [BiocManager](https://cran.r-project.org/web/packages
     httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/r4/#r4-biocmanager r4-biocmanager
     httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/r4/#cran2crux cran2crux
 
+Note that if you want to just try cran2crux, you can run it **without installation**, directly from its downloaded and unarchived folder (see below "Example"), as long as you have BiocManager installed.
 
 ## Configuration
 You should modify `/etc/cran2crux.conf` to fill in the maintainer line, specify a [CRAN mirror](https://cran.r-project.org/mirrors.html), and adjust the BioConductor version. The R syntax is used, therefore settings look like this:
@@ -36,12 +37,16 @@ Some dependencies are already inbuild in R, such as `methods` from **Depends**, 
 ## Example
 Create a new empty directory to call cran2crux there:
 ```BASH
-mkdir rrr
-cd rrr 
+mkdir rports
+cd rports 
 ```
 Let's create a port for the [Seurat](https://cran.r-project.org/web/packages/Seurat/) R-package that provides a set of tools for single cell genomics ([Satija lab](https://satijalab.org/seurat/)). The following will create a single port, called `r4-seurat`:
 
 ```BASH
+# for local download of cran2crux (no installation)
+bash '/path/to/cran2crux' Seurat
+
+# for system-wide installed cran2crux
 cran2crux Seurat
 ```
 
