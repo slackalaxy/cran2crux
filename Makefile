@@ -16,7 +16,7 @@ all:
 
 install:
 	install -Dm644 cran2crux.conf "$(DESTDIR)$(ETCDIR)/cran2crux.conf"
-	install -Dm755 cran2crux.sh   "$(DESTDIR)$(BINDIR)/cran2crux"
+	install -Dm755 cran2crux      "$(DESTDIR)$(BINDIR)/cran2crux"
 	install -Dm644 cran2pkgfile.R "$(DESTDIR)$(LIBDIR)/cran2pkgfile.R"
 	install -Dm644 old2new.R      "$(DESTDIR)$(LIBDIR)/old2new.R"
 	install -Dm644 repos2db.R     "$(DESTDIR)$(LIBDIR)/repos2db.R"
