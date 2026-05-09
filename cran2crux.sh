@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# cran2crux: Write CRUX ports for R modules from CRAN and Bioconductor
+# cran2crux: Write CRUX ports for R-packages from CRAN and Bioconductor
 #
 # Written by Petar Petrov, slackalaxy at gmail dot com
 #
@@ -51,7 +51,7 @@ elif [[ -f "$INST_DIR/repos2db.R" && \
         -f "$INST_DIR/cran2pkgfile.R" ]]; then
         R_SCRIPT_PATH="$INST_DIR"
 else
-	error_message "cran2crux R scripts not found"
+	error_message "cran2crux R scripts not found."
 fi
 
 # Path to conf file; check if it exists in the same dir as cran2crux.sh
@@ -62,7 +62,7 @@ if [[ -f "$DRIVER_DIR/cran2crux.conf" ]]; then
 elif [[ -f "$ETC_DIR/cran2crux.conf" ]]; then
         CONF_FILE="$ETC_DIR/cran2crux.conf"
 else
-	error_message "cran2crux.conf not found"
+	error_message "cran2crux.conf not found."
 fi
 
 help_menu() {
@@ -85,12 +85,12 @@ perm_check() {
 	
 	# folder not readable	
 	if [[ ! -r "$CHECK" ]]; then
-		error_message "$CHECK is not readable"
+		error_message "$CHECK is not readable."
 	fi
 	
 	# folder not writeable
 	if [[ ! -w "$CHECK" ]]; then
-		error_message "$CHECK is not writable"
+		error_message "$CHECK is not writable."
 	fi
 }
 
@@ -115,7 +115,7 @@ rds_check() {
 pwd_check() {
 	perm_check "$PWD"
 	if [[ -d "$PWD" ]] && [[ -n $(ls -A "$PWD" 2>/dev/null) ]]; then
-		error_message "Folder '$DIRNAM' is not empty. Use a clean one to generate ports"
+		error_message "Dir '$DIRNAM' is not empty, use a clean one."
 	fi	
 }
 
@@ -133,18 +133,18 @@ pkgfile_args_check() {
 	
 	# module name starts with a dash
 	if [[ "${module:0:1}" = "-" ]]; then
-		error_message "Invalid R-package name or option '${module}'"
+		error_message "Invalid R-package name or option '${module}'."
 	fi
 
 	# second option is invalid
 	if [[ -n "$option" ]] && [[ "$option" != "-r" ]] && [[ "$option" != "-ro" ]] && [[ "$option" != "--recursive" ]] && [[ "$option" != "--recursive-opt" ]]; then
-		error_message "Invalid option for creating port '${option}'"
+		error_message "Invalid option for creating port '${option}'."
 	fi
     	
     	# is depth valid? try use it as a number
 	if [[ -n "$depth" ]]; then	
     		if ! (( depth > 1 )) 2>/dev/null; then
-    			error_message "Invalid integer '${depth}' (must be >= 2)"
+    			error_message "Invalid integer '${depth}' (must be >= 2)."
     		fi
 	fi
 }
