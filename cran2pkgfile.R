@@ -28,7 +28,7 @@ on.cran <- function(x) {
 
 # stop already if input does not exist
 if (is.null(on.cran(module))) {
-  stop(paste0("'", module, "'", " is not on CRAN or BioConductor...", "\n"))
+  stop(paste0("'", module, "'", " cannot be found on CRAN or Bioconductor.", "\n"))
 }
 
 # leave only deps available on CRAN
@@ -145,7 +145,7 @@ pkgfile.style <- function(x){
   return(y)
 }
 
-# try to get the url right
+# try to get the url right for the Pkgfile URL field
 get.url <- function(x){
   if (x == paste0(bioc.url, bioc.version, "/bioc/src/contrib") |
       x == paste0(bioc.url, bioc.version, "/data/annotation/src/contrib") |
