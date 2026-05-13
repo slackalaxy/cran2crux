@@ -1,6 +1,6 @@
 # cran2crux: write CRUX ports for R-packages
 [![Badge](https://img.shields.io/badge/Origin-Slackalaxy-green)](https://github.com/slackalaxy/cran2crux)
-[![Badge](https://img.shields.io/badge/Preprint-bioRxiv-red)](https://www.biorxiv.org/)
+[![Badge](https://img.shields.io/badge/Preprint-bioRxiv-red)](https://www.biorxiv.org/content/10.64898/2026.05.09.723963)
 
 ## Description
 The cran2crux script automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/)-packages available from [CRAN](https://cran.r-project.org/) and [BioConductor](https://bioconductor.org/). Simply running `cran2crux Foo` will produce a port named `r4-foo`. Any dots in the name are replaced by a dashes (e.g. foo.bar - > foo-bar) and any dashes in the version are replaced by dots (e.g. 1-2-3 -> 1.2.3). The tool creates its output in the current work directory, which must be **empty**.  
