@@ -126,6 +126,6 @@ The authors declare no competing interests.
 PBP wrote the code, performed the testing, did benchmarking and drafted the paper. VI acquired funding, contributed to the manuscript preparation and reviewed the code.
 
 # AI usage disclosure
-Generative AI tools (Grok) were used to assist with code quality assessment and, to a minor extent, with manuscript preparation.
+Generative AI tools (Grok) were used to assist with code quality assessment and, to a minor extent, with manuscript preparation. The authors reviewed, edited, validated all AI-assisted outputs and made the core design decisions.
 
 # References
