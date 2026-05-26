@@ -1,95 +1,119 @@
 .\" 
 .\" cran2crux manual page.
-.\" (C) 2023 by Petar Petrov <slackalaxy@gmail.com> 
+.\" (C) 2023-2026 by Petar Petrov <slackalaxy@gmail.com> 
 .\"
-.TH cran2crux 1
-.SH NAME
-cran2crux \- Write CRUX ports for CRAN R modules
-.SH SYNOPSIS
-.PP
-.B cran2crux
-.SH DESCRIPTION
+.TH cran2crux 1 "May 2026"
 
-The \fIcran2crux\fP script automatically generates ready to use port(s) for
-R-packages available from CRAN (\fhttps://cran.r-project.org/\fP) and BioConductor
-(\fhttps://bioconductor.org/\fP). The script creates ports in the current
-directory, which must be empty. The name of each port is "r4-foo" (lowercase) and
-the release number is set to 1.
+.SH NAME
+cran2crux \- generate CRUX ports for R packages from CRAN and Bioconductor
+
+.SH SYNOPSIS
+.B cran2crux
+.RI "[options]"
+.RI "[package]"
+.RI "[depth]"
+
+.SH DESCRIPTION
+The \fIcran2crux\fP script automatically generates ready-to-use port(s) for
+R packages available from CRAN (\fIhttps://cran.r-project.org/\fP) and
+Bioconductor (\fIhttps://bioconductor.org/\fP). 
+
+The script creates ports in the current working directory, which must be empty.
+Each generated port is named \fBr4-foo\fP (lowercase) and has release number 1.
 
 .SH OPTIONS
 .TP
 .B "\-r, \-\-recursive"
-Create port for an R-package and create ports for its dependencies and their own
-dependencies, recursively.
+Create a port for an R package and recursively create ports for its dependencies.
+
 .TP
 .B "\-ro, \-\-recursive\-opt"
-Create port for an R-package and create ports for its dependencies, as well as,
-its optional dependencies, recursively. This may require to set <dependencies
-depth> to a higher number (see below). This is rather slow and its usage
-is discouraged.
+Create a port for an R package and recursively create ports for its dependencies
+as well as its optional dependencies. This may require setting a higher
+dependency depth (see below). This option is slow and its usage is discouraged.
+
 .TP
 .B "\-so, \-\-show\-old"
-Check for potential updates of R-packages that are already installed. This
-will report the versions as found at the upstream repository.
+Check for potential updates of already installed R packages. Reports versions
+found in the upstream repositories.
+
 .TP
 .B "\-u, \-\-update"
-Generate updated ports for installed R-packages, that are reported to be outdated.
+Generate updated ports for installed R packages that have newer versions available.
+
 .TP
 .B "\-h, \-\-help"
-Display help.
+Display help and exit.
+
 .TP
 .B "<dependencies depth>"
-A positive integer after the \-r or \-ro option. This defines how many iterations of
-recursive searches for dependencies cran2crux will perform. Set to a higher value
-(>10) if dependencies list is expected to be large.
+A positive integer supplied after the \fB\-r\fP or \fB\-ro\fP option. It defines
+how many iterations of recursive dependency searches will be performed.
+Use higher values (>10) when the dependency list is expected to be large.
 
 .SH CONFIG
-You should configure \fI/etc/cran2crux.conf\fP to set a maintainer line, a CRAN
-and Bioconductor mirrors, as well as the Bioconductor version. R syntax is used
-(!), therefore settings go like this:
+You should configure \fI/etc/cran2crux.conf\fP to set the maintainer line,
+CRAN mirror, Bioconductor mirror, and Bioconductor version. The file uses R syntax:
 
 .PP
 .nf
-	maintainer.info <- c("Petar Petrov, slackalaxy at gmail dot com")
-	cranrepo.url <- "https://cloud.r-project.org"
-	bioc.url <- "https://bioconductor.org/packages/"
-	bioc.version <- "3.23"
+    maintainer.info <- c("Petar Petrov, slackalaxy at gmail dot com")
+    cranrepo.url <- "https://cloud.r-project.org"
+    bioc.url     <- "https://bioconductor.org/packages/"
+    bioc.version <- "3.23"
+.fi
 
 .SH EXAMPLES
-.fi
-.PP
 
 Call \fIcran2crux\fP in a newly created, empty directory:
+
 .PP
 .nf
-	mkdir rrr
-	cd rrr 
-	
+    mkdir rports
+    cd rports
+.fi
+
+.PP
 This will create a port for an R-package:
 
-	cran2crux Foo
-	
+.PP
+.nf
+    cran2crux Foo
+.fi
+
+.PP
 This will create a port for Foo and dependencies recursively:
 
-	cran2crux Foo -r
-	
-This will create a port for foo, its dependencies and optional
-dependencies, recursively. This may require more intensive dependencies
+.PP
+.nf
+    cran2crux Foo -r
+.fi
+
+.PP
+This will create a port for Foo, its dependencies and optional
+dependencies, recursively. This may require more intensive dependency
 searches, therefore we increase the depth value to 15:
 
-	cran2crux Foo -ro 15
+.PP
+.nf
+    cran2crux Foo -ro 15
+.fi
 
+.PP
 This will show potential updates of installed R-packages:
 
-	cran2crux -so
-	
-This will generate updated ports for outdated R-packages already installed:
-	
-	cran2crux -u
-
-.fi
 .PP
+.nf
+    cran2crux -so
+.fi
+
+.PP
+This will generate updated ports for outdated R-packages already installed:
+
+.PP
+.nf
+    cran2crux -u
+.fi
 
 .SH AUTHOR
-
 \fIcran2crux\fP was written by Petar Petrov <slackalaxy@gmail.com> for CRUX.
