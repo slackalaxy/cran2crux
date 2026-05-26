@@ -154,6 +154,7 @@ Include information about system requirements.
 * [The Comprehensive R Archive Network](https://cran.r-project.org/)
 * [CRAN Mirrors](https://cran.r-project.org/mirrors.html)
 * [Bioconductor](https://bioconductor.org/)
+* [CRUX](https://crux.nu/)
 * [R package Guidelines at Arch Linux wiki](https://wiki.archlinux.org/title/R_package_guidelines)
 
 ![img](./cran2crux.png)
