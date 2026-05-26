@@ -1,6 +1,10 @@
 # cran2crux: write CRUX ports for R-packages
 [![Badge](https://img.shields.io/badge/Origin-Slackalaxy-green)](https://github.com/slackalaxy/cran2crux)
 [![Badge](https://img.shields.io/badge/Preprint-bioRxiv-red)](https://www.biorxiv.org/content/10.64898/2026.05.09.723963)
+[![CRAN](https://img.shields.io/badge/CRAN-blue?logo=r&logoColor=white)](https://cran.r-project.org/)
+[![Bioconductor](https://img.shields.io/badge/Bioconductor-9B5DE5?logo=bioconductor&logoColor=white)](https://bioconductor.org/)
+[![CRUX](https://img.shields.io/badge/Linux-CRUX-orange)](https://crux.nu/)
+[![r4 Ports](https://img.shields.io/badge/Ports-r4-orange)](https://crux.nu/portdb/?a=repo&q=r4)
 
 ## Description
 `cran2crux` automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/)-packages available from [CRAN](https://cran.r-project.org/) and [Bioconductor](https://bioconductor.org/). It also supports recursive dependency resolution and potential updates check.
