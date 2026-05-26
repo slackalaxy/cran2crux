@@ -35,7 +35,7 @@ show.old <- function(){
                           R_package = old$Package,
                           Installed = old$Installed,
                           ReposVer = old$ReposVer,
-                          Repositoty = upstream(old$Repository))
+                          Repository = upstream(old$Repository))
     
     return(print(display, row.names = F))
   } else {
