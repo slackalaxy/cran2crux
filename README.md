@@ -3,7 +3,7 @@
 [![Badge](https://img.shields.io/badge/Preprint-bioRxiv-red)](https://www.biorxiv.org/content/10.64898/2026.05.09.723963)
 
 ## Description
-The `cran2crux` script automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/)-packages available from [CRAN](https://cran.r-project.org/) and [Bioconductor](https://bioconductor.org/).
+`cran2crux` automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/)-packages available from [CRAN](https://cran.r-project.org/) and [Bioconductor](https://bioconductor.org/). It also supports recursive dependency resolution and update detection.
 
 ## Requirements
 * BASH
@@ -33,7 +33,7 @@ In R, install BiocManager:
 ```r
 install.packages("BiocManager")
 ```
-Quick example usage:
+Quick example:
 ```sh
 git clone https://github.com/izzilab/cran2crux
 cd cran2crux
@@ -57,7 +57,7 @@ pkgmk -i
 ```
 
 ## Configuration
-Once installed, modify `/etc/cran2crux.conf` to set the maintainer information line, specify a different [CRAN mirror](https://cran.r-project.org/mirrors.html) (if desired), and adjust the BioConductor version (if needed). The file uses R syntax:
+Once installed, modify `/etc/cran2crux.conf` to set your maintainer information. Also, you may specify a different [CRAN mirror](https://cran.r-project.org/mirrors.html) (if desired), and adjust the Bioconductor version (if needed). The file uses R syntax:
 ```r
 maintainer.info <- c("Firstname Lastname, firstname.lastname at email dot com")
 cranrepo.url <- "https://cloud.r-project.org"
@@ -66,13 +66,8 @@ bioc.version <- "3.23"
 
 ## Generated Ports
 
-**Naming convention**  
-Ports are automatically named with an `r4-` prefix, all letters in lowercase, and dots (`.`) replaced by dashes (`-`).  
-
-**Version handling**  
-Dashes (`-`) in the upstream version are replaced by dots (`.`).
-
-**Examples:**
+**Naming and version handling**  
+Ports are automatically named with an `r4-` prefix, all letters in lowercase, and dots replaced by dashes. Dashes in the upstream version are replaced by dots. Examples:
 - R-package: `SeuratObject` → Port: `r4-seuratobject`
 - Version: `1.2-3` → Port: `1.2.3`
 
@@ -82,9 +77,7 @@ Metadata from CRAN/Bioconductor is added, as follows:
 * `# Depends on:` `r` followed by packages listed in *Depends*, *Imports*, and *LinkingTo*.
 * `# Optional:` packages listed in *Suggests*.
 
-Built-in R packages (e.g. `methods`, `utils`) are omitted.  
-
-**Note:** `cran2crux` does not handle *SystemRequirements* (system-level dependencies), since they are outside the R ecosystem. You will need to add them manually using `finddeps`.
+Built-in R packages (e.g. `methods`, `utils`) are omitted. **Note**: `cran2crux` does not handle system-level dependencies from the *SystemRequirements* field, since they are outside the R ecosystem. You will need to add them manually using `finddeps`.
 
 ## Example
 The tool creates its output in the current working directory, which **must be empty**:
