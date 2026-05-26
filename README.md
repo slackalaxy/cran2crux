@@ -3,7 +3,7 @@
 [![Badge](https://img.shields.io/badge/Preprint-bioRxiv-red)](https://www.biorxiv.org/content/10.64898/2026.05.09.723963)
 
 ## Description
-`cran2crux` automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/)-packages available from [CRAN](https://cran.r-project.org/) and [Bioconductor](https://bioconductor.org/). It also supports recursive dependency resolution and update detection.
+`cran2crux` automatically generates [CRUX](https://crux.nu/) port(s) for [R](https://www.r-project.org/)-packages available from [CRAN](https://cran.r-project.org/) and [Bioconductor](https://bioconductor.org/). It also supports recursive dependency resolution and potential updates check.
 
 ## Requirements
 * BASH
@@ -24,26 +24,29 @@ cran2crux Seurat -ro 15
 # Check for updates
 cran2crux -so
 
-# Generate updated ports for outdated
+# Generate updated ports for outdated R-packages
 cran2crux -u
 ```
 
 ## Run without installing
-In R, install BiocManager:
 ```r
+# In R, install BiocManager:
 install.packages("BiocManager")
 ```
 Quick example:
 ```sh
+# Get cran2crux and navigate to an empty directory
 git clone https://github.com/izzilab/cran2crux
 cd cran2crux
 mkdir rports
 cd rports
+
+# Generate a port for Seurat and dependencies
 bash ../cran2crux Seurat -r
 ```
 
 ## Installation on CRUX
-R is available in *contrib*, make sure you have the repository enabled ([Point 5.7.2 in the Handbook](https://crux.nu/Main/Handbook3-8#ntoc44)). Ports for [r4-biocmanager](https://github.com/slackalaxy/crux-ports/tree/main/r4/r4-biocmanager) and [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/r4/cran2crux) are available in the [r4](https://crux.nu/portdb/?a=search&q=r4) repository:
+R is available in *contrib*, so make sure you have the repository enabled ([Point 5.7.2 in the Handbook](https://crux.nu/Main/Handbook3-8#ntoc44)). Ports for [r4-biocmanager](https://github.com/slackalaxy/crux-ports/tree/main/r4/r4-biocmanager) and [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/r4/cran2crux) are available in the [r4](https://crux.nu/portdb/?a=search&q=r4) repository:
 ```sh
 prt-get depinst r
 
@@ -111,7 +114,7 @@ build() {
 	R CMD INSTALL . -l $PKG/usr/lib/R/library
 }
 ```
-Although the dependencies rows are automatically filled, the corresponding ports are *not* created. Adding the `-r` (`--recursive`) option will create ports for `Seurat` and what it depends on, recursively (make sure working directory is empty):
+Although the dependencies rows are automatically filled, the corresponding ports are *not* created. Adding the `-r` (`--recursive`) option will create ports for `Seurat` and what it depends on, recursively (make sure working directory is **empty**):
 ```sh
 cran2crux Seurat -r
 ```
