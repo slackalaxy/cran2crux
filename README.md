@@ -49,11 +49,15 @@ cd rports
 bash ../cran2crux Seurat -r
 ```
 ## r4: ports repository for R packages
-A ports repository for R-packages can be found [here](https://github.com/slackalaxy/crux-ports/tree/main/r4).
+**r4** is our ports repository for R-packages, maintained by `cran2crux` and can be found [at GitHub](https://github.com/slackalaxy/crux-ports/tree/main/r4) or CRUX's [portdb](https://crux.nu/portdb/?a=search&q=r4). Grab the CRUX specific HttpUp and public key files: [r4.httpup](https://raw.githubusercontent.com/slackalaxy/crux-ports/main/r4/r4.httpup), [r4.pub](https://raw.githubusercontent.com/slackalaxy/crux-ports/main/r4/r4.pub) and place them in `/etc/ports`.
 
 ## Installation on CRUX
-R is available in *contrib*, so make sure you have the repository enabled ([Point 5.7.2 in the Handbook](https://crux.nu/Main/Handbook3-8#ntoc44)). Ports for [r4-biocmanager](https://github.com/slackalaxy/crux-ports/tree/main/r4/r4-biocmanager) and [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/r4/cran2crux) are available in the [r4](https://crux.nu/portdb/?a=search&q=r4) repository:
+R is available in *contrib*, so make sure you have the repository enabled ([Point 5.7.2 in the Handbook](https://crux.nu/Main/Handbook3-8#ntoc44)). Ports for [r4-biocmanager](https://github.com/slackalaxy/crux-ports/tree/main/r4/r4-biocmanager) and [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/r4/cran2crux) itself are available in the [r4](https://crux.nu/portdb/?a=search&q=r4) repository:
 ```sh
+# if you have the r4 repos enabled:
+prt-get depinst cran2crux
+
+# otherwise:
 prt-get depinst r
 
 httpup sync https://raw.githubusercontent.com/slackalaxy/crux-ports/main/r4/#r4-biocmanager r4-biocmanager
