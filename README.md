@@ -122,7 +122,7 @@ Although the dependencies rows are automatically filled, the corresponding ports
 ```sh
 cran2crux Seurat -r
 ```
-Parsing `-ro` (`--recursive-opt`) will do as above, including what's optional. We set the `depth` value to 15, as this requires more searches (WARNING: this is quite time-consuming):
+Processing Seurat and its dependencies recursively yields a total of 142 ports in about 11 seconds on an Intel i7-9700KF @3.6GHz, as reported by `time` (see Benchmarks). Parsing `-ro` (`--recursive-opt`) will do as above, including what's optional. We set the `depth` value to 15 (default is 5, but here we want deeper recursion), as this requires more searches (WARNING: this is quite time-consuming):
 ```sh
 cran2crux Seurat -ro 15
 ```
@@ -143,8 +143,29 @@ This will create updated ports for the five R-packages above, by simply passing 
 ```sh
 cran2crux -u
 ```
-## r4 repository
+## r4: ports repository for R packages
 A ports repository for R-packages can be found [here](https://github.com/slackalaxy/crux-ports/tree/main/r4).
+
+## Benchmarking
+|||run 1|run 2|run 3|mean|stdev
+-|-|-|-|-|-|-
+default|real (s)|10.599|10.656|10.298|10.518|0.192
+default|user (s)|8.833|8.598|8.719|8.717|0.118
+default|sys (s)|0.801|0.853|0.805|0.820|0.029
+|||||
+depth 2|real (s)|7.105|7.197|7.248|7.183|0.072
+depth 2|user (s)|5.717|5.837|5.757|5.770|0.061
+depth 2|sys (s)|0.482|0.457|0.453|0.464|0.016
+|||||
+no download|real (s)|6.728|6.665|6.694|6.696|0.032
+no download|user (s)|5.965|5.905|5.896|5.922|0.038
+no download|sys (s)|0.765|0.762|0.800|0.776|0.021
+|||||
+no download, depth 2|real (s)|3.468|3.446|3.440|3.451|0.015
+no download, depth 2|user (s)|3.059|3.050|3.069|3.059|0.010
+no download, depth 2|sys (s)|0.410|0.399|0.373|0.394|0.019
+
+> **Table 1. Performance of cran2crux.** Generating Seurat and dependencies ports was timed in 3 independent runs, under the following conditions: *default* (sync with upstream + depth 5 of recursive dependencies searches), *depth 2* (sync with upstream + depth 2 of recursive dependencies searches), *no download* (upstream pre-synced + depth 5 of recursive dependencies searches), *no download, depth 2* (upstream pre-synced + depth 2 of recursive dependencies searches). Time of each run (1-3) is given in seconds: *real* (total elapsed time), *user* (time in user-space code) and *sys* (time in kernel/system calls). Mean and stdev values were calculated in Gnumeric 
 
 ## TODO
 Include information about system requirements.
