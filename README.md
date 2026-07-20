@@ -48,6 +48,8 @@ cd rports
 # Generate a port for Seurat and dependencies
 bash ../cran2crux Seurat -r
 ```
+## r4: ports repository for R packages
+A ports repository for R-packages can be found [here](https://github.com/slackalaxy/crux-ports/tree/main/r4).
 
 ## Installation on CRUX
 R is available in *contrib*, so make sure you have the repository enabled ([Point 5.7.2 in the Handbook](https://crux.nu/Main/Handbook3-8#ntoc44)). Ports for [r4-biocmanager](https://github.com/slackalaxy/crux-ports/tree/main/r4/r4-biocmanager) and [cran2crux](https://github.com/slackalaxy/crux-ports/tree/main/r4/cran2crux) are available in the [r4](https://crux.nu/portdb/?a=search&q=r4) repository:
@@ -143,9 +145,6 @@ This will create updated ports for the five R-packages above, by simply passing 
 ```sh
 cran2crux -u
 ```
-## r4: ports repository for R packages
-A ports repository for R-packages can be found [here](https://github.com/slackalaxy/crux-ports/tree/main/r4).
-
 ## Benchmarks
 |condition|time (s)|run 1|run 2|run 3|mean|stdev
 -|-|-|-|-|-|-
